@@ -256,19 +256,16 @@ export default function Lander() {
     exit: (dir) => ({ x: dir > 0 ? -80 : 80, opacity: 0 }),
   };
 
-  // Fire Google Ads tag on form completion
+  // Fire Google Ads conversion on form completion
   useEffect(() => {
     if (!submitted) return;
-    const script = document.createElement('script');
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17995555560';
-    script.async = true;
-    document.head.appendChild(script);
-    script.onload = () => {
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { window.dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'AW-17995555560');
-    };
+    if (window.gtag) {
+      window.gtag('event', 'conversion', {
+        send_to: 'AW-17995555560/e37BCPuanoMcEOjF-YRD',
+        value: 1.0,
+        currency: 'USD',
+      });
+    }
   }, [submitted]);
 
   if (submitted) {
