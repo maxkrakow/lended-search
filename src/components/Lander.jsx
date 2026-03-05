@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/20/solid';
 import { InlineWidget } from 'react-calendly';
@@ -255,6 +255,21 @@ export default function Lander() {
     center: { x: 0, opacity: 1 },
     exit: (dir) => ({ x: dir > 0 ? -80 : 80, opacity: 0 }),
   };
+
+  // Fire Google Ads tag on form completion
+  useEffect(() => {
+    if (!submitted) return;
+    const script = document.createElement('script');
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17995555560';
+    script.async = true;
+    document.head.appendChild(script);
+    script.onload = () => {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'AW-17995555560');
+    };
+  }, [submitted]);
 
   if (submitted) {
     return (
