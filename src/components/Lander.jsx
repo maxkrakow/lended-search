@@ -309,25 +309,16 @@ export default function Lander() {
         </div>
       </header>
 
-      {/* Hero text (only on first step) */}
-      <AnimatePresence>
-        {currentStep === 0 && (
-          <motion.div
-            className="text-center px-4 pt-8 pb-2"
-            initial={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-3">
-              We Find, Vet & Book Meetings With{' '}
-              <span className="text-emerald-600">Motivated Sellers</span>
-            </h1>
-            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
-              Answer a few quick questions to see if off-market deal sourcing is right for your search.
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Hero text - always visible */}
+      <div className="text-center px-4 pt-8 pb-4">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-2">
+          We Find, Vet & Book Meetings With{' '}
+          <span className="text-emerald-600">Motivated Sellers</span>
+        </h1>
+        <p className="text-gray-500 text-base max-w-2xl mx-auto">
+          Answer a few quick questions to see if off-market deal sourcing is right for your search.
+        </p>
+      </div>
 
       {/* Question area */}
       <div className="flex-1 flex items-start justify-center px-4 pt-8 pb-8">
