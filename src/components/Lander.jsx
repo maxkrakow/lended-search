@@ -288,19 +288,9 @@ export default function Lander() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Progress bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-gray-200">
-        <motion.div
-          className="h-full bg-emerald-500"
-          initial={{ width: 0 }}
-          animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.3 }}
-        />
-      </div>
-
-      {/* Header */}
-      <header className="pt-6 pb-4 px-4 sm:px-8 bg-white border-b border-gray-100">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
+      {/* Sticky header with progress */}
+      <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
+        <div className="max-w-4xl mx-auto flex items-center justify-between px-4 sm:px-8 py-4">
           <a href="/" className="flex items-center gap-2">
             <img src="/logo.png" alt="Lended Search" className="h-8 w-auto" />
           </a>
@@ -308,13 +298,22 @@ export default function Lander() {
             Step {currentStep + 1} of {totalSteps}
           </span>
         </div>
+        {/* Progress bar under header */}
+        <div className="h-1 bg-gray-100">
+          <motion.div
+            className="h-full bg-emerald-500"
+            initial={{ width: 0 }}
+            animate={{ width: `${((currentStep + 1) / totalSteps) * 100}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
       </header>
 
       {/* Hero text (only on first step) */}
       <AnimatePresence>
         {currentStep === 0 && (
           <motion.div
-            className="text-center px-4 pt-10 pb-2"
+            className="text-center px-4 pt-8 pb-2"
             initial={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
@@ -331,7 +330,7 @@ export default function Lander() {
       </AnimatePresence>
 
       {/* Question area */}
-      <div className="flex-1 flex items-center justify-center px-4 py-8">
+      <div className="flex-1 flex items-start justify-center px-4 pt-8 pb-8">
         <div className="w-full max-w-xl">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
