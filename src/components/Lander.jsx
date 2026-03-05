@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRightIcon, ArrowLeftIcon, CheckIcon } from '@heroicons/react/20/solid';
+import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/20/solid';
+import { InlineWidget } from 'react-calendly';
 import { db } from '../firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
@@ -152,6 +153,12 @@ const questions = [
     type: 'email',
     placeholder: 'you@example.com',
   },
+  {
+    id: 'phone',
+    question: 'What\'s your phone number?',
+    type: 'tel',
+    placeholder: '(555) 123-4567',
+  },
 ];
 
 const processSteps = [
@@ -252,29 +259,27 @@ export default function Lander() {
   if (submitted) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="flex-1 flex items-center justify-center px-4">
-          <motion.div
-            className="text-center max-w-lg"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-          >
-            <div className="mx-auto w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mb-6">
-              <CheckIcon className="h-8 w-8 text-emerald-600" />
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-3">You're In.</h2>
-            <p className="text-gray-500 mb-8">
-              Based on your answers, you look like a great fit. Book your free strategy session below and we'll build a custom sourcing plan for your criteria.
-            </p>
-            <a
-              href={CALENDLY}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-4 text-base font-semibold text-white hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200"
-            >
-              Book Your Free Strategy Session
-              <ArrowRightIcon className="h-5 w-5" />
-            </a>
-          </motion.div>
+        <motion.div
+          className="text-center px-4 pt-10 pb-4"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">You're In.</h2>
+          <p className="text-gray-500 max-w-lg mx-auto">
+            Based on your answers, you look like a great fit. Pick a time below and we'll build a custom sourcing plan for your criteria.
+          </p>
+        </motion.div>
+        <div className="flex-1 px-4 pb-8">
+          <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-sm">
+            <InlineWidget
+              url={CALENDLY}
+              prefill={{
+                name: answers.name || '',
+                email: answers.email || '',
+              }}
+              styles={{ height: '660px', minWidth: '320px' }}
+            />
+          </div>
         </div>
         <LanderFooter />
       </div>
@@ -369,7 +374,7 @@ export default function Lander() {
                 </div>
               )}
 
-              {(currentQuestion.type === 'text' || currentQuestion.type === 'email') && (
+              {(currentQuestion.type === 'text' || currentQuestion.type === 'email' || currentQuestion.type === 'tel') && (
                 <form onSubmit={handleTextSubmit}>
                   <input
                     type={currentQuestion.type}
