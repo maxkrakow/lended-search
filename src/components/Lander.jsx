@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRightIcon, ArrowLeftIcon, CheckIcon } from '@heroicons/react/20/solid';
+import { db } from '../firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const CALENDLY = 'https://calendly.com/lended/lended-search-off-market-deal-sourcing';
 
@@ -166,7 +168,6 @@ export default function Lander() {
   const [submitted, setSubmitted] = useState(false);
   const [textValue, setTextValue] = useState('');
 
-  // Filter questions based on conditional logic
   const activeQuestions = questions.filter(
     (q) => !q.showIf || q.showIf(answers)
   );
@@ -174,6 +175,18 @@ export default function Lander() {
   const currentQuestion = activeQuestions[currentStep];
   const totalSteps = activeQuestions.length;
   const progress = ((currentStep) / totalSteps) * 100;
+
+  const submitToFirebase = useCallback(async (finalAnswers) => {
+    try {
+      await addDoc(collection(db, 'leads'), {
+        ...finalAnswers,
+        source: 'lander',
+        createdAt: serverTimestamp(),
+      });
+    } catch (err) {
+      console.error('Error saving lead:', err);
+    }
+  }, []);
 
   const goNext = useCallback(() => {
     if (currentStep < totalSteps - 1) {
@@ -194,17 +207,41 @@ export default function Lander() {
   }, [currentStep]);
 
   const handleSelect = useCallback((questionId, value) => {
-    setAnswers((prev) => ({ ...prev, [questionId]: value }));
-    setTimeout(() => goNext(), 300);
-  }, [goNext]);
+    const updated = { ...answers, [questionId]: value };
+    setAnswers(updated);
+    // Check if this is the last question
+    const remaining = questions.filter((q) => !q.showIf || q.showIf(updated));
+    const currentIdx = remaining.findIndex((q) => q.id === questionId);
+    if (currentIdx >= remaining.length - 1) {
+      submitToFirebase(updated);
+      setTimeout(() => setSubmitted(true), 300);
+    } else {
+      setTimeout(() => {
+        setDirection(1);
+        setCurrentStep((s) => s + 1);
+        setTextValue('');
+      }, 300);
+    }
+  }, [answers, submitToFirebase]);
 
   const handleTextSubmit = useCallback((e) => {
     e.preventDefault();
     if (textValue.trim()) {
-      setAnswers((prev) => ({ ...prev, [currentQuestion.id]: textValue.trim() }));
-      goNext();
+      const updated = { ...answers, [currentQuestion.id]: textValue.trim() };
+      setAnswers(updated);
+      // Check if last question
+      const remaining = questions.filter((q) => !q.showIf || q.showIf(updated));
+      const currentIdx = remaining.findIndex((q) => q.id === currentQuestion.id);
+      if (currentIdx >= remaining.length - 1) {
+        submitToFirebase(updated);
+        setSubmitted(true);
+      } else {
+        setDirection(1);
+        setCurrentStep((s) => s + 1);
+        setTextValue('');
+      }
     }
-  }, [textValue, currentQuestion, goNext]);
+  }, [textValue, currentQuestion, answers, submitToFirebase]);
 
   const variants = {
     enter: (dir) => ({ x: dir > 0 ? 80 : -80, opacity: 0 }),
@@ -214,25 +251,25 @@ export default function Lander() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col">
+      <div className="min-h-screen bg-gray-50 flex flex-col">
         <div className="flex-1 flex items-center justify-center px-4">
           <motion.div
             className="text-center max-w-lg"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
           >
-            <div className="mx-auto w-16 h-16 rounded-full bg-emerald-500/20 flex items-center justify-center mb-6">
-              <CheckIcon className="h-8 w-8 text-emerald-400" />
+            <div className="mx-auto w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mb-6">
+              <CheckIcon className="h-8 w-8 text-emerald-600" />
             </div>
-            <h2 className="text-3xl font-bold text-white mb-3">You're In.</h2>
-            <p className="text-gray-400 mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-3">You're In.</h2>
+            <p className="text-gray-500 mb-8">
               Based on your answers, you look like a great fit. Book your free strategy session below and we'll build a custom sourcing plan for your criteria.
             </p>
             <a
               href={CALENDLY}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-8 py-4 text-base font-semibold text-white hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/25"
+              className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-4 text-base font-semibold text-white hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200"
             >
               Book Your Free Strategy Session
               <ArrowRightIcon className="h-5 w-5" />
@@ -245,9 +282,9 @@ export default function Lander() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Progress bar */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-slate-800">
+      <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-gray-200">
         <motion.div
           className="h-full bg-emerald-500"
           initial={{ width: 0 }}
@@ -257,12 +294,12 @@ export default function Lander() {
       </div>
 
       {/* Header */}
-      <header className="pt-6 pb-4 px-4 sm:px-8">
+      <header className="pt-6 pb-4 px-4 sm:px-8 bg-white border-b border-gray-100">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <a href="/" className="flex items-center gap-2">
             <img src="/logo.png" alt="Lended Search" className="h-8 w-auto" />
           </a>
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-gray-400">
             Step {currentStep + 1} of {totalSteps}
           </span>
         </div>
@@ -272,16 +309,16 @@ export default function Lander() {
       <AnimatePresence>
         {currentStep === 0 && (
           <motion.div
-            className="text-center px-4 pt-6 pb-2"
+            className="text-center px-4 pt-10 pb-2"
             initial={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-3">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-3">
               We Find, Vet & Book Meetings With{' '}
-              <span className="text-emerald-400">Motivated Sellers</span>
+              <span className="text-emerald-600">Motivated Sellers</span>
             </h1>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
               Answer a few quick questions to see if off-market deal sourcing is right for your search.
             </p>
           </motion.div>
@@ -301,7 +338,7 @@ export default function Lander() {
               exit="exit"
               transition={{ duration: 0.25, ease: 'easeInOut' }}
             >
-              <p className="text-2xl sm:text-3xl font-bold text-white mb-8">
+              <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
                 {currentQuestion.question}
               </p>
 
@@ -316,12 +353,12 @@ export default function Lander() {
                         onClick={() => handleSelect(currentQuestion.id, opt.value)}
                         className={`w-full flex items-center gap-4 rounded-xl border px-5 py-4 text-left transition-all ${
                           isSelected
-                            ? 'border-emerald-500 bg-emerald-500/10 text-white'
-                            : 'border-slate-700 bg-slate-900/50 text-gray-300 hover:border-slate-500 hover:bg-slate-800/50'
+                            ? 'border-emerald-500 bg-emerald-50 text-gray-900'
+                            : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300 hover:shadow-sm'
                         }`}
                       >
                         <span className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${
-                          isSelected ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-400'
+                          isSelected ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-500'
                         }`}>
                           {letter}
                         </span>
@@ -340,12 +377,12 @@ export default function Lander() {
                     onChange={(e) => setTextValue(e.target.value)}
                     placeholder={currentQuestion.placeholder}
                     autoFocus
-                    className="w-full rounded-xl border border-slate-700 bg-slate-900/50 px-5 py-4 text-white text-lg placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
+                    className="w-full rounded-xl border border-gray-200 bg-white px-5 py-4 text-gray-900 text-lg placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
                   />
                   <button
                     type="submit"
                     disabled={!textValue.trim()}
-                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-500 px-6 py-3 text-sm font-semibold text-white hover:bg-emerald-400 transition-all disabled:opacity-40 disabled:hover:bg-emerald-500"
+                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-all disabled:opacity-40 disabled:hover:bg-emerald-600"
                   >
                     Continue
                     <ArrowRightIcon className="h-4 w-4" />
@@ -359,7 +396,7 @@ export default function Lander() {
           {currentStep > 0 && (
             <button
               onClick={goBack}
-              className="mt-8 inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-300 transition-colors"
+              className="mt-8 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors"
             >
               <ArrowLeftIcon className="h-4 w-4" />
               Back
@@ -369,25 +406,25 @@ export default function Lander() {
       </div>
 
       {/* Process steps bar */}
-      <div className="border-t border-slate-800 bg-slate-900/50 py-6 px-4">
+      <div className="border-t border-gray-200 bg-white py-6 px-4">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between">
             {processSteps.map((step, i) => (
               <React.Fragment key={step.label}>
                 <div className="flex flex-col items-center gap-1.5">
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold ${
-                    i === 0 ? 'bg-emerald-500 text-white' : 'bg-slate-800 text-slate-500'
+                    i === 0 ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-400'
                   }`}>
                     {step.icon}
                   </div>
                   <span className={`text-xs font-medium ${
-                    i === 0 ? 'text-emerald-400' : 'text-slate-500'
+                    i === 0 ? 'text-emerald-600' : 'text-gray-400'
                   }`}>
                     {step.label}
                   </span>
                 </div>
                 {i < processSteps.length - 1 && (
-                  <div className="flex-1 h-px bg-slate-800 mx-2" />
+                  <div className="flex-1 h-px bg-gray-200 mx-2" />
                 )}
               </React.Fragment>
             ))}
@@ -402,12 +439,12 @@ export default function Lander() {
 
 function LanderFooter() {
   return (
-    <footer className="border-t border-slate-800 py-6 px-4 text-center">
+    <footer className="border-t border-gray-200 bg-white py-6 px-4 text-center">
       <div className="max-w-4xl mx-auto">
-        <p className="text-xs text-slate-600">
+        <p className="text-xs text-gray-400">
           &copy; {new Date().getFullYear()} Lended Search. All rights reserved. | lendedsearch.com
         </p>
-        <p className="text-xs text-slate-700 mt-2">
+        <p className="text-xs text-gray-400 mt-2">
           This is not an offer to lend. Results vary based on market conditions, criteria, and other factors.
         </p>
       </div>
