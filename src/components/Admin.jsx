@@ -66,9 +66,22 @@ export default function Admin() {
   const fetchLeads = async () => {
     setLoading(true);
     try {
-      const q = query(collection(db, 'leads'), orderBy('createdAt', 'desc'));
-      const snapshot = await getDocs(q);
-      setLeads(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+      let snapshot;
+      try {
+        const q = query(collection(db, 'leads'), orderBy('createdAt', 'desc'));
+        snapshot = await getDocs(q);
+      } catch (indexErr) {
+        // Fallback if index doesn't exist yet
+        snapshot = await getDocs(collection(db, 'leads'));
+      }
+      const data = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+      // Sort client-side as fallback
+      data.sort((a, b) => {
+        const aTime = a.createdAt?.toMillis?.() || 0;
+        const bTime = b.createdAt?.toMillis?.() || 0;
+        return bTime - aTime;
+      });
+      setLeads(data);
     } catch (err) {
       console.error('Error fetching leads:', err);
     }
