@@ -12,6 +12,7 @@ import FAQ from './components/FAQ';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
 import Lander from './components/Lander';
+import Admin from './components/Admin';
 
 function HomePage() {
   return (
@@ -37,6 +38,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/lander" element={<Lander />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   );
