@@ -208,10 +208,27 @@ export default function Lander() {
   const totalSteps = activeQuestions.length;
   const progress = ((currentStep) / totalSteps) * 100;
 
+  const formatAnswers = (raw) => {
+    const formatted = { ...raw };
+    // Format phone: strip non-digits, prepend +1
+    if (formatted.phone) {
+      const digits = formatted.phone.replace(/\D/g, '');
+      formatted.phone = digits.startsWith('1') ? `+${digits}` : `+1${digits}`;
+    }
+    // Format name: save first word as name, full as fullName
+    if (formatted.name) {
+      const full = formatted.name.trim();
+      formatted.fullName = full;
+      formatted.name = full.split(/\s+/)[0];
+    }
+    return formatted;
+  };
+
   const submitToFirebase = useCallback(async (finalAnswers) => {
     try {
+      const formatted = formatAnswers(finalAnswers);
       await addDoc(collection(db, 'leads'), {
-        ...finalAnswers,
+        ...formatted,
         source: 'lander',
         createdAt: serverTimestamp(),
       });
