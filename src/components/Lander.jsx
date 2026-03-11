@@ -69,7 +69,7 @@ const questions = [
   },
   {
     id: 'deal_size',
-    question: 'What\'s your total deal size budget?',
+    question: 'What purchase price are you targeting?',
     type: 'select',
     options: [
       { label: 'Under $500K', value: 'under-500k' },
