@@ -142,6 +142,31 @@ const questions = [
     ],
   },
   {
+    id: 'program',
+    question: 'Which program are you most interested in?',
+    type: 'program',
+    options: [
+      {
+        label: 'Listing Monitor',
+        price: '$1,000/mo',
+        description: 'All major listing sites scraped daily, filtered to your criteria. We reach out to matching sellers and book meetings on your behalf.',
+        value: 'listing-monitor',
+      },
+      {
+        label: 'Off-Market — State',
+        price: '$3,000/mo',
+        description: 'Dedicated caller + email campaigns targeting owners in your state. Off-market sellers not listed anywhere. Every response screened and qualified.',
+        value: 'off-market-state',
+      },
+      {
+        label: 'Off-Market — National',
+        price: '$5,000/mo',
+        description: 'Two dedicated callers + nationwide campaigns across multiple states. 20-50 qualified conversations per month with a dedicated account manager.',
+        value: 'off-market-national',
+      },
+    ],
+  },
+  {
     id: 'name',
     question: 'What\'s your name?',
     type: 'text',
@@ -370,6 +395,31 @@ export default function Lander() {
                           {letter}
                         </span>
                         <span className="text-sm sm:text-base font-medium">{opt.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {currentQuestion.type === 'program' && (
+                <div className="space-y-3">
+                  {currentQuestion.options.map((opt) => {
+                    const isSelected = answers[currentQuestion.id] === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        onClick={() => handleSelect(currentQuestion.id, opt.value)}
+                        className={`w-full rounded-xl border px-5 py-5 text-left transition-all ${
+                          isSelected
+                            ? 'border-emerald-500 bg-emerald-50'
+                            : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-base font-semibold text-gray-900">{opt.label}</span>
+                          <span className={`text-sm font-bold ${isSelected ? 'text-emerald-600' : 'text-gray-900'}`}>{opt.price}</span>
+                        </div>
+                        <p className="text-sm text-gray-500 leading-relaxed">{opt.description}</p>
                       </button>
                     );
                   })}
