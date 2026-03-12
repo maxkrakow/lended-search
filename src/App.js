@@ -13,6 +13,7 @@ import CTA from './components/CTA';
 import Footer from './components/Footer';
 import Lander from './components/Lander';
 import Admin from './components/Admin';
+import Lander1 from './components/Lander1';
 
 function HomePage() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/lander" element={<Lander />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/lander1" element={<Lander1 />} />
       </Routes>
     </BrowserRouter>
   );
