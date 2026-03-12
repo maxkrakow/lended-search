@@ -199,6 +199,7 @@ export default function Lander() {
   const [direction, setDirection] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [textValue, setTextValue] = useState('');
+  const [validationError, setValidationError] = useState('');
 
   const activeQuestions = questions.filter(
     (q) => !q.showIf || q.showIf(answers)
@@ -252,6 +253,7 @@ export default function Lander() {
       setDirection(-1);
       setCurrentStep((s) => s - 1);
       setTextValue('');
+      setValidationError('');
     }
   }, [currentStep]);
 
@@ -273,8 +275,25 @@ export default function Lander() {
     }
   }, [answers, submitToFirebase]);
 
+  const validateInput = useCallback((type, value) => {
+    if (type === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) return 'Please enter a valid email address';
+    }
+    if (type === 'tel') {
+      const digits = value.replace(/\D/g, '');
+      if (digits.length < 10) return 'Please enter a valid phone number (at least 10 digits)';
+    }
+    return '';
+  }, []);
+
   const handleTextSubmit = useCallback((e) => {
     e.preventDefault();
+    const error = validateInput(currentQuestion.type, textValue.trim());
+    if (error) {
+      setValidationError(error);
+      return;
+    }
     if (textValue.trim()) {
       const updated = { ...answers, [currentQuestion.id]: textValue.trim() };
       setAnswers(updated);
@@ -448,11 +467,16 @@ export default function Lander() {
                   <input
                     type={currentQuestion.type}
                     value={textValue}
-                    onChange={(e) => setTextValue(e.target.value)}
+                    onChange={(e) => { setTextValue(e.target.value); setValidationError(''); }}
                     placeholder={currentQuestion.placeholder}
                     autoFocus
-                    className="w-full rounded-xl border border-gray-200 bg-white px-5 py-4 text-gray-900 text-lg placeholder-gray-400 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all"
+                    className={`w-full rounded-xl border bg-white px-5 py-4 text-gray-900 text-lg placeholder-gray-400 focus:outline-none focus:ring-1 transition-all ${
+                      validationError ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-200 focus:border-emerald-500 focus:ring-emerald-500'
+                    }`}
                   />
+                  {validationError && (
+                    <p className="mt-2 text-sm text-red-500">{validationError}</p>
+                  )}
                   <button
                     type="submit"
                     disabled={!textValue.trim()}
