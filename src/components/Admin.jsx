@@ -39,7 +39,9 @@ const FIELD_LABELS = {
   readiness: 'Readiness',
   us_resident: 'US Resident',
   current_search: 'Current Search',
-  name: 'Name',
+  program: 'Program',
+  name: 'First Name',
+  fullName: 'Full Name',
   email: 'Email',
   phone: 'Phone',
 };
@@ -206,6 +208,7 @@ export default function Admin() {
                     <th className="text-left px-4 py-3 font-medium text-gray-500">Type</th>
                     <th className="text-left px-4 py-3 font-medium text-gray-500">Industry</th>
                     <th className="text-left px-4 py-3 font-medium text-gray-500">Deal Size</th>
+                    <th className="text-left px-4 py-3 font-medium text-gray-500">Program</th>
                     <th className="text-left px-4 py-3 font-medium text-gray-500">Readiness</th>
                     <th className="text-left px-4 py-3 font-medium text-gray-500">Date</th>
                     <th className="text-left px-4 py-3 font-medium text-gray-500">Status</th>
@@ -224,6 +227,7 @@ export default function Admin() {
                         <td className="px-4 py-3 text-gray-600">{lead.searcher_type || '—'}</td>
                         <td className="px-4 py-3 text-gray-600">{lead.industry || '—'}</td>
                         <td className="px-4 py-3 text-gray-600">{lead.deal_size || '—'}</td>
+                        <td className="px-4 py-3 text-gray-600">{lead.program || '—'}</td>
                         <td className="px-4 py-3 text-gray-600">{lead.readiness || '—'}</td>
                         <td className="px-4 py-3 text-gray-500 text-xs">{formatDate(lead.createdAt)}</td>
                         <td className="px-4 py-3">
