@@ -467,30 +467,19 @@ export default function Lander() {
             )}
           </div>
 
-          {/* Case study - right side, hidden on mobile */}
+          {/* Case studies - right side, hidden on mobile */}
           <div className="hidden lg:flex flex-col gap-4 w-72 flex-shrink-0 pt-4">
             <CaseStudyCard study={caseStudies[2]} />
-            {/* Social proof */}
-            <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="flex -space-x-2">
-                  {['bg-emerald-500', 'bg-blue-500', 'bg-purple-500'].map((bg, i) => (
-                    <div key={i} className={`w-7 h-7 rounded-full ${bg} border-2 border-white`} />
-                  ))}
-                </div>
-                <span className="text-xs text-gray-500">Join 400+ searchers</span>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <div className="text-lg font-bold text-gray-900">$500M+</div>
-                  <div className="text-xs text-gray-500">Pipeline sourced</div>
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-gray-900">3-6 mo</div>
-                  <div className="text-xs text-gray-500">Avg time to LOI</div>
-                </div>
-              </div>
-            </div>
+            <CaseStudyCard study={{
+              tag: 'PE-Backed',
+              headline: '$500M+ Pipeline Sourced',
+              desc: 'Across 400+ searchers, we\'ve sourced over $500M in deal pipeline with an average time to LOI of 3-6 months.',
+              stats: [
+                { value: '400+', label: 'Searchers' },
+                { value: '$500M+', label: 'Pipeline' },
+                { value: '3-6 mo', label: 'Avg to LOI' },
+              ],
+            }} />
           </div>
         </div>
 
@@ -503,6 +492,36 @@ export default function Lander() {
                 <CaseStudyCard study={study} />
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* How It Works - fills bottom space */}
+      <div className="border-t border-gray-200 bg-white py-10 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h3 className="text-center text-lg font-bold text-gray-900 mb-8">How It Works</h3>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { step: '01', title: 'Apply', desc: 'Tell us your acquisition criteria and goals' },
+              { step: '02', title: 'Strategy Call', desc: 'We build a custom sourcing plan for your search' },
+              { step: '03', title: 'Launch Campaign', desc: 'Our team starts outreach to matching owners' },
+              { step: '04', title: 'Get Meetings', desc: 'We book qualified meetings on your calendar' },
+            ].map((item, i) => (
+              <div key={item.step} className="text-center">
+                <div className={`w-10 h-10 rounded-full mx-auto mb-3 flex items-center justify-center text-sm font-bold ${
+                  i === 0 ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-400'
+                }`}>
+                  {item.step}
+                </div>
+                <h4 className="text-sm font-semibold text-gray-900 mb-1">{item.title}</h4>
+                <p className="text-xs text-gray-500">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-8 text-center">
+            <p className="text-sm text-gray-500">
+              Trusted by <span className="font-semibold text-gray-900">400+ searchers</span> across the country
+            </p>
           </div>
         </div>
       </div>
