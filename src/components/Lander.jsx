@@ -447,7 +447,7 @@ export default function Lander() {
                       type="submit"
                       className="w-full rounded-xl bg-emerald-600 px-6 py-4 text-base font-semibold text-white hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
                     >
-                      See If You Qualify
+                      Submit & Book Your Call
                       <ArrowRightIcon className="h-5 w-5" />
                     </button>
                   </form>
