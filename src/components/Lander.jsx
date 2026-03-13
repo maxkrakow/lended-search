@@ -44,30 +44,6 @@ const questions = [
     ],
   },
   {
-    id: 'target_sde',
-    question: 'What\'s your target SDE (Seller\'s Discretionary Earnings) range?',
-    type: 'select',
-    options: [
-      { label: '$250K – $500K', value: '250-500' },
-      { label: '$500K – $1M', value: '500-1m' },
-      { label: '$1M – $3M', value: '1m-3m' },
-      { label: '$3M+', value: '3m+' },
-      { label: 'Not sure yet', value: 'unsure' },
-    ],
-  },
-  {
-    id: 'target_revenue',
-    question: 'What annual revenue range are you targeting?',
-    type: 'select',
-    options: [
-      { label: '$1M – $3M', value: '1-3m' },
-      { label: '$3M – $5M', value: '3-5m' },
-      { label: '$5M – $10M', value: '5-10m' },
-      { label: '$10M+', value: '10m+' },
-      { label: 'Flexible / Not sure', value: 'flexible' },
-    ],
-  },
-  {
     id: 'deal_size',
     question: 'What purchase price are you targeting?',
     type: 'select',
@@ -77,22 +53,6 @@ const questions = [
       { label: '$1M – $3M', value: '1m-3m' },
       { label: '$3M – $5M', value: '3m-5m' },
       { label: '$5M+', value: '5m+' },
-    ],
-  },
-  {
-    id: 'liquid_cash',
-    question: 'How much liquid cash do you have available for a down payment?',
-    type: 'select',
-    showIf: (answers) => {
-      const ds = answers.deal_size;
-      return ds && ds !== 'under-500k';
-    },
-    options: [
-      { label: 'Under $100K', value: 'under-100k' },
-      { label: '$100K – $250K', value: '100-250k' },
-      { label: '$250K – $500K', value: '250-500k' },
-      { label: '$500K – $1M', value: '500k-1m' },
-      { label: '$1M+', value: '1m+' },
     ],
   },
   {
@@ -115,19 +75,6 @@ const questions = [
       { label: 'Within 3-6 months', value: '3-6mo' },
       { label: 'Within 6-12 months', value: '6-12mo' },
       { label: 'Just exploring for now', value: 'exploring' },
-    ],
-  },
-  {
-    id: 'us_resident',
-    question: 'Are you a US citizen or permanent resident?',
-    type: 'select',
-    showIf: (answers) => {
-      const r = answers.readiness;
-      return r === 'asap' || r === '3-6mo';
-    },
-    options: [
-      { label: 'Yes', value: 'yes' },
-      { label: 'No', value: 'no' },
     ],
   },
   {
@@ -155,42 +102,59 @@ const questions = [
       {
         label: 'Off-Market — State',
         price: '$3,000/mo',
-        description: 'Dedicated caller + email campaigns targeting owners in your state. Off-market sellers not listed anywhere. Every response screened and qualified.',
+        description: 'Dedicated caller + email campaigns targeting owners in your state. Off-market sellers not listed anywhere.',
         value: 'off-market-state',
+        popular: true,
       },
       {
         label: 'Off-Market — National',
         price: '$5,000/mo',
-        description: 'Two dedicated callers + nationwide campaigns across multiple states. 20-50 qualified conversations per month with a dedicated account manager.',
+        description: 'Two dedicated callers + nationwide campaigns across multiple states. 20-50 qualified conversations per month.',
         value: 'off-market-national',
       },
     ],
   },
   {
-    id: 'name',
-    question: 'What\'s your name?',
-    type: 'text',
-    placeholder: 'Full name',
-  },
-  {
-    id: 'email',
-    question: 'What\'s the best email to reach you?',
-    type: 'email',
-    placeholder: 'you@example.com',
-  },
-  {
-    id: 'phone',
-    question: 'What\'s your phone number?',
-    type: 'tel',
-    placeholder: '(555) 123-4567',
+    id: 'contact',
+    question: 'Last step — how do we reach you?',
+    type: 'contact',
   },
 ];
 
-const processSteps = [
-  { label: 'Apply', icon: '01' },
-  { label: 'Strategy Call', icon: '02' },
-  { label: 'Launch Campaign', icon: '03' },
-  { label: 'Get Meetings', icon: '04' },
+const caseStudies = [
+  {
+    tag: 'Self-Funded Searcher',
+    sector: 'Home Services, Texas',
+    headline: 'LOI in 4 Months',
+    desc: 'Was 8 months in with no pipeline. 37 qualified conversations in 90 days. Under LOI on a $3.5M HVAC business.',
+    stats: [
+      { value: '37', label: 'Conversations' },
+      { value: '90', label: 'Days' },
+      { value: '$3.5M', label: 'Deal' },
+    ],
+  },
+  {
+    tag: 'Search Fund',
+    sector: 'Manufacturing, Midwest',
+    headline: '47 Conversations in 90 Days',
+    desc: 'Traditional search fund relying on brokers for 6 months. First meeting in 11 days. 3 deals in active diligence.',
+    stats: [
+      { value: '47', label: 'Conversations' },
+      { value: '11', label: 'Days to First' },
+      { value: '3', label: 'In Diligence' },
+    ],
+  },
+  {
+    tag: 'Independent Sponsor',
+    sector: 'Business Services, SE',
+    headline: '22 Meetings in 30 Days',
+    desc: 'Had capital committed but no deal flow. 22 owner meetings in first month. Closed acquisition within 6 months.',
+    stats: [
+      { value: '22', label: 'Meetings' },
+      { value: '30', label: 'Days' },
+      { value: '6mo', label: 'To Close' },
+    ],
+  },
 ];
 
 export default function Lander() {
@@ -198,25 +162,17 @@ export default function Lander() {
   const [answers, setAnswers] = useState({});
   const [direction, setDirection] = useState(1);
   const [submitted, setSubmitted] = useState(false);
-  const [textValue, setTextValue] = useState('');
-  const [validationError, setValidationError] = useState('');
+  const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '' });
+  const [validationErrors, setValidationErrors] = useState({});
 
-  const activeQuestions = questions.filter(
-    (q) => !q.showIf || q.showIf(answers)
-  );
-
-  const currentQuestion = activeQuestions[currentStep];
-  const totalSteps = activeQuestions.length;
-  const progress = ((currentStep) / totalSteps) * 100;
+  const totalSteps = questions.length;
 
   const formatAnswers = (raw) => {
     const formatted = { ...raw };
-    // Format phone: strip non-digits, prepend +1
     if (formatted.phone) {
       const digits = formatted.phone.replace(/\D/g, '');
       formatted.phone = digits.startsWith('1') ? `+${digits}` : `+1${digits}`;
     }
-    // Format name: save first word as name, full as fullName
     if (formatted.name) {
       const full = formatted.name.trim();
       formatted.fullName = full;
@@ -239,77 +195,50 @@ export default function Lander() {
   }, []);
 
   const goNext = useCallback(() => {
-    if (currentStep < totalSteps - 1) {
-      setDirection(1);
-      setCurrentStep((s) => s + 1);
-      setTextValue('');
-    } else {
-      setSubmitted(true);
-    }
-  }, [currentStep, totalSteps]);
+    setDirection(1);
+    setCurrentStep((s) => Math.min(s + 1, totalSteps - 1));
+  }, [totalSteps]);
 
   const goBack = useCallback(() => {
     if (currentStep > 0) {
       setDirection(-1);
       setCurrentStep((s) => s - 1);
-      setTextValue('');
-      setValidationError('');
+      setValidationErrors({});
     }
   }, [currentStep]);
 
   const handleSelect = useCallback((questionId, value) => {
     const updated = { ...answers, [questionId]: value };
     setAnswers(updated);
-    // Check if this is the last question
-    const remaining = questions.filter((q) => !q.showIf || q.showIf(updated));
-    const currentIdx = remaining.findIndex((q) => q.id === questionId);
-    if (currentIdx >= remaining.length - 1) {
-      submitToFirebase(updated);
-      setTimeout(() => setSubmitted(true), 300);
-    } else {
-      setTimeout(() => {
-        setDirection(1);
-        setCurrentStep((s) => s + 1);
-        setTextValue('');
-      }, 300);
-    }
-  }, [answers, submitToFirebase]);
+    setTimeout(() => {
+      setDirection(1);
+      setCurrentStep((s) => s + 1);
+    }, 300);
+  }, [answers]);
 
-  const validateInput = useCallback((type, value) => {
-    if (type === 'email') {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value)) return 'Please enter a valid email address';
-    }
-    if (type === 'tel') {
-      const digits = value.replace(/\D/g, '');
-      if (digits.length < 10) return 'Please enter a valid phone number (at least 10 digits)';
-    }
-    return '';
-  }, []);
-
-  const handleTextSubmit = useCallback((e) => {
+  const handleContactSubmit = useCallback((e) => {
     e.preventDefault();
-    const error = validateInput(currentQuestion.type, textValue.trim());
-    if (error) {
-      setValidationError(error);
+    const errors = {};
+    if (!contactForm.name.trim()) errors.name = 'Name is required';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactForm.email)) errors.email = 'Please enter a valid email';
+    const digits = contactForm.phone.replace(/\D/g, '');
+    if (digits.length < 10) errors.phone = 'Please enter a valid phone number';
+
+    if (Object.keys(errors).length > 0) {
+      setValidationErrors(errors);
       return;
     }
-    if (textValue.trim()) {
-      const updated = { ...answers, [currentQuestion.id]: textValue.trim() };
-      setAnswers(updated);
-      // Check if last question
-      const remaining = questions.filter((q) => !q.showIf || q.showIf(updated));
-      const currentIdx = remaining.findIndex((q) => q.id === currentQuestion.id);
-      if (currentIdx >= remaining.length - 1) {
-        submitToFirebase(updated);
-        setSubmitted(true);
-      } else {
-        setDirection(1);
-        setCurrentStep((s) => s + 1);
-        setTextValue('');
-      }
-    }
-  }, [textValue, currentQuestion, answers, submitToFirebase]);
+
+    const finalAnswers = {
+      ...answers,
+      name: contactForm.name.trim(),
+      email: contactForm.email.trim(),
+      phone: contactForm.phone.trim(),
+    };
+    submitToFirebase(finalAnswers);
+    setSubmitted(true);
+  }, [contactForm, answers, submitToFirebase]);
 
   const variants = {
     enter: (dir) => ({ x: dir > 0 ? 80 : -80, opacity: 0 }),
@@ -347,8 +276,8 @@ export default function Lander() {
             <InlineWidget
               url={CALENDLY}
               prefill={{
-                name: answers.name || '',
-                email: answers.email || '',
+                name: contactForm.name || '',
+                email: contactForm.email || '',
               }}
               styles={{ height: '660px', minWidth: '320px' }}
             />
@@ -359,19 +288,18 @@ export default function Lander() {
     );
   }
 
+  const currentQuestion = questions[currentStep];
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Sticky header with progress */}
       <header className="sticky top-0 z-50 bg-white border-b border-gray-100">
-        <div className="max-w-4xl mx-auto flex items-center justify-between px-4 sm:px-8 py-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-8 py-4">
           <a href="/" className="flex items-center gap-2">
             <img src="/logo.png" alt="Lended Search" className="h-8 w-auto" />
           </a>
-          <span className="text-xs text-gray-400">
-            Step {currentStep + 1} of {totalSteps}
-          </span>
         </div>
-        {/* Progress bar under header */}
+        {/* Progress bar */}
         <div className="h-1 bg-gray-100">
           <motion.div
             className="h-full bg-emerald-500"
@@ -382,7 +310,7 @@ export default function Lander() {
         </div>
       </header>
 
-      {/* Hero text - always visible */}
+      {/* Hero text */}
       <div className="text-center px-4 pt-8 pb-4">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 mb-2">
           We Find, Vet & Book Meetings With{' '}
@@ -393,144 +321,215 @@ export default function Lander() {
         </p>
       </div>
 
-      {/* Question area */}
-      <div className="flex-1 flex items-start justify-center px-4 pt-8 pb-8">
-        <div className="w-full max-w-xl">
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={currentQuestion.id}
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.25, ease: 'easeInOut' }}
-            >
-              <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
-                {currentQuestion.question}
-              </p>
+      {/* Main content: form + case studies */}
+      <div className="flex-1 px-4 pt-4 pb-8">
+        <div className="max-w-6xl mx-auto flex gap-8 items-start">
+          {/* Case studies - left side, hidden on mobile */}
+          <div className="hidden lg:flex flex-col gap-4 w-72 flex-shrink-0 pt-4">
+            {caseStudies.slice(0, 2).map((study) => (
+              <CaseStudyCard key={study.headline} study={study} />
+            ))}
+          </div>
 
-              {currentQuestion.type === 'select' && (
-                <div className="space-y-3">
-                  {currentQuestion.options.map((opt, i) => {
-                    const letter = String.fromCharCode(65 + i);
-                    const isSelected = answers[currentQuestion.id] === opt.value;
-                    return (
-                      <button
-                        key={opt.value}
-                        onClick={() => handleSelect(currentQuestion.id, opt.value)}
-                        className={`w-full flex items-center gap-4 rounded-xl border px-5 py-4 text-left transition-all ${
-                          isSelected
-                            ? 'border-emerald-500 bg-emerald-50 text-gray-900'
-                            : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300 hover:shadow-sm'
-                        }`}
-                      >
-                        <span className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${
-                          isSelected ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-500'
-                        }`}>
-                          {letter}
-                        </span>
-                        <span className="text-sm sm:text-base font-medium">{opt.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
+          {/* Form area - center */}
+          <div className="flex-1 max-w-xl mx-auto">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={currentQuestion.id}
+                custom={direction}
+                variants={variants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+              >
+                <p className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
+                  {currentQuestion.question}
+                </p>
 
-              {currentQuestion.type === 'program' && (
-                <div className="space-y-3">
-                  {currentQuestion.options.map((opt) => {
-                    const isSelected = answers[currentQuestion.id] === opt.value;
-                    return (
-                      <button
-                        key={opt.value}
-                        onClick={() => handleSelect(currentQuestion.id, opt.value)}
-                        className={`w-full rounded-xl border px-5 py-5 text-left transition-all ${
-                          isSelected
-                            ? 'border-emerald-500 bg-emerald-50'
-                            : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-                        }`}
-                      >
-                        <div className="flex items-center justify-between mb-1.5">
-                          <span className="text-base font-semibold text-gray-900">{opt.label}</span>
-                          <span className={`text-sm font-bold ${isSelected ? 'text-emerald-600' : 'text-gray-900'}`}>{opt.price}</span>
-                        </div>
-                        <p className="text-sm text-gray-500 leading-relaxed">{opt.description}</p>
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-
-              {(currentQuestion.type === 'text' || currentQuestion.type === 'email' || currentQuestion.type === 'tel') && (
-                <form onSubmit={handleTextSubmit}>
-                  <input
-                    type={currentQuestion.type}
-                    value={textValue}
-                    onChange={(e) => { setTextValue(e.target.value); setValidationError(''); }}
-                    placeholder={currentQuestion.placeholder}
-                    autoFocus
-                    className={`w-full rounded-xl border bg-white px-5 py-4 text-gray-900 text-lg placeholder-gray-400 focus:outline-none focus:ring-1 transition-all ${
-                      validationError ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-200 focus:border-emerald-500 focus:ring-emerald-500'
-                    }`}
-                  />
-                  {validationError && (
-                    <p className="mt-2 text-sm text-red-500">{validationError}</p>
-                  )}
-                  <button
-                    type="submit"
-                    disabled={!textValue.trim()}
-                    className="mt-4 inline-flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-all disabled:opacity-40 disabled:hover:bg-emerald-600"
-                  >
-                    Continue
-                    <ArrowRightIcon className="h-4 w-4" />
-                  </button>
-                </form>
-              )}
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Navigation */}
-          {currentStep > 0 && (
-            <button
-              onClick={goBack}
-              className="mt-8 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors"
-            >
-              <ArrowLeftIcon className="h-4 w-4" />
-              Back
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* Process steps bar */}
-      <div className="border-t border-gray-200 bg-white py-6 px-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="flex items-center justify-between">
-            {processSteps.map((step, i) => (
-              <React.Fragment key={step.label}>
-                <div className="flex flex-col items-center gap-1.5">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold ${
-                    i === 0 ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-400'
-                  }`}>
-                    {step.icon}
+                {currentQuestion.type === 'select' && (
+                  <div className="space-y-3">
+                    {currentQuestion.options.map((opt, i) => {
+                      const letter = String.fromCharCode(65 + i);
+                      const isSelected = answers[currentQuestion.id] === opt.value;
+                      return (
+                        <button
+                          key={opt.value}
+                          onClick={() => handleSelect(currentQuestion.id, opt.value)}
+                          className={`w-full flex items-center gap-4 rounded-xl border px-5 py-4 text-left transition-all ${
+                            isSelected
+                              ? 'border-emerald-500 bg-emerald-50 text-gray-900'
+                              : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300 hover:shadow-sm'
+                          }`}
+                        >
+                          <span className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold ${
+                            isSelected ? 'bg-emerald-500 text-white' : 'bg-gray-100 text-gray-500'
+                          }`}>
+                            {letter}
+                          </span>
+                          <span className="text-sm sm:text-base font-medium">{opt.label}</span>
+                        </button>
+                      );
+                    })}
                   </div>
-                  <span className={`text-xs font-medium ${
-                    i === 0 ? 'text-emerald-600' : 'text-gray-400'
-                  }`}>
-                    {step.label}
-                  </span>
-                </div>
-                {i < processSteps.length - 1 && (
-                  <div className="flex-1 h-px bg-gray-200 mx-2" />
                 )}
-              </React.Fragment>
+
+                {currentQuestion.type === 'program' && (
+                  <div className="space-y-3">
+                    {currentQuestion.options.map((opt) => {
+                      const isSelected = answers[currentQuestion.id] === opt.value;
+                      return (
+                        <button
+                          key={opt.value}
+                          onClick={() => handleSelect(currentQuestion.id, opt.value)}
+                          className={`w-full rounded-xl border px-5 py-5 text-left transition-all relative ${
+                            isSelected
+                              ? 'border-emerald-500 bg-emerald-50'
+                              : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
+                          }`}
+                        >
+                          {opt.popular && (
+                            <span className="absolute -top-2.5 right-4 bg-emerald-600 text-white text-xs font-bold px-3 py-0.5 rounded-full">
+                              Most Popular
+                            </span>
+                          )}
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="text-base font-semibold text-gray-900">{opt.label}</span>
+                            <span className={`text-sm font-bold ${isSelected ? 'text-emerald-600' : 'text-gray-900'}`}>{opt.price}</span>
+                          </div>
+                          <p className="text-sm text-gray-500 leading-relaxed">{opt.description}</p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {currentQuestion.type === 'contact' && (
+                  <form onSubmit={handleContactSubmit} className="space-y-4">
+                    <div>
+                      <input
+                        type="text"
+                        value={contactForm.name}
+                        onChange={(e) => { setContactForm(f => ({ ...f, name: e.target.value })); setValidationErrors(v => ({ ...v, name: '' })); }}
+                        placeholder="Full name"
+                        autoFocus
+                        className={`w-full rounded-xl border bg-white px-5 py-4 text-gray-900 text-lg placeholder-gray-400 focus:outline-none focus:ring-1 transition-all ${
+                          validationErrors.name ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-200 focus:border-emerald-500 focus:ring-emerald-500'
+                        }`}
+                      />
+                      {validationErrors.name && <p className="mt-1 text-sm text-red-500">{validationErrors.name}</p>}
+                    </div>
+                    <div>
+                      <input
+                        type="email"
+                        value={contactForm.email}
+                        onChange={(e) => { setContactForm(f => ({ ...f, email: e.target.value })); setValidationErrors(v => ({ ...v, email: '' })); }}
+                        placeholder="you@example.com"
+                        className={`w-full rounded-xl border bg-white px-5 py-4 text-gray-900 text-lg placeholder-gray-400 focus:outline-none focus:ring-1 transition-all ${
+                          validationErrors.email ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-200 focus:border-emerald-500 focus:ring-emerald-500'
+                        }`}
+                      />
+                      {validationErrors.email && <p className="mt-1 text-sm text-red-500">{validationErrors.email}</p>}
+                    </div>
+                    <div>
+                      <input
+                        type="tel"
+                        value={contactForm.phone}
+                        onChange={(e) => { setContactForm(f => ({ ...f, phone: e.target.value })); setValidationErrors(v => ({ ...v, phone: '' })); }}
+                        placeholder="(555) 123-4567"
+                        className={`w-full rounded-xl border bg-white px-5 py-4 text-gray-900 text-lg placeholder-gray-400 focus:outline-none focus:ring-1 transition-all ${
+                          validationErrors.phone ? 'border-red-300 focus:border-red-500 focus:ring-red-500' : 'border-gray-200 focus:border-emerald-500 focus:ring-emerald-500'
+                        }`}
+                      />
+                      {validationErrors.phone && <p className="mt-1 text-sm text-red-500">{validationErrors.phone}</p>}
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full rounded-xl bg-emerald-600 px-6 py-4 text-base font-semibold text-white hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
+                    >
+                      See If You Qualify
+                      <ArrowRightIcon className="h-5 w-5" />
+                    </button>
+                  </form>
+                )}
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Back button */}
+            {currentStep > 0 && (
+              <button
+                onClick={goBack}
+                className="mt-6 inline-flex items-center gap-2 text-sm text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <ArrowLeftIcon className="h-4 w-4" />
+                Back
+              </button>
+            )}
+          </div>
+
+          {/* Case study - right side, hidden on mobile */}
+          <div className="hidden lg:flex flex-col gap-4 w-72 flex-shrink-0 pt-4">
+            <CaseStudyCard study={caseStudies[2]} />
+            {/* Social proof */}
+            <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex -space-x-2">
+                  {['bg-emerald-500', 'bg-blue-500', 'bg-purple-500'].map((bg, i) => (
+                    <div key={i} className={`w-7 h-7 rounded-full ${bg} border-2 border-white`} />
+                  ))}
+                </div>
+                <span className="text-xs text-gray-500">Join 400+ searchers</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <div className="text-lg font-bold text-gray-900">$500M+</div>
+                  <div className="text-xs text-gray-500">Pipeline sourced</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-gray-900">3-6 mo</div>
+                  <div className="text-xs text-gray-500">Avg time to LOI</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Case studies on mobile - shown below form */}
+        <div className="lg:hidden mt-8">
+          <p className="text-sm font-semibold text-gray-500 mb-3 text-center">Real Results</p>
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x">
+            {caseStudies.map((study) => (
+              <div key={study.headline} className="min-w-[280px] snap-start">
+                <CaseStudyCard study={study} />
+              </div>
             ))}
           </div>
         </div>
       </div>
 
       <LanderFooter />
+    </div>
+  );
+}
+
+function CaseStudyCard({ study }) {
+  return (
+    <div className="rounded-2xl border border-gray-100 bg-white overflow-hidden shadow-sm">
+      <div className="p-5">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xs font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">{study.tag}</span>
+        </div>
+        <h3 className="text-base font-bold text-gray-900 mb-1">{study.headline}</h3>
+        <p className="text-xs text-gray-500 leading-relaxed">{study.desc}</p>
+      </div>
+      <div className="grid grid-cols-3 border-t border-gray-100 bg-gray-50/50">
+        {study.stats.map((stat) => (
+          <div key={stat.label} className="p-2.5 text-center border-r last:border-r-0 border-gray-100">
+            <div className="text-sm font-bold text-emerald-600">{stat.value}</div>
+            <div className="text-[10px] text-gray-500">{stat.label}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
