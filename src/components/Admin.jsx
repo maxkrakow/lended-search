@@ -46,6 +46,18 @@ const FIELD_LABELS = {
   phone: 'Phone',
 };
 
+const FUNNEL_STEPS = [
+  { id: 'motivation', label: 'Situation' },
+  { id: 'searcher_type', label: 'Type' },
+  { id: 'industry', label: 'Industry' },
+  { id: 'deal_size', label: 'Deal Size' },
+  { id: 'location', label: 'Location' },
+  { id: 'readiness', label: 'Readiness' },
+  { id: 'current_search', label: 'Sourcing' },
+  { id: 'program', label: 'Program' },
+  { id: 'contact', label: 'Contact' },
+];
+
 export default function Admin() {
   const [authed, setAuthed] = useState(false);
   const [code, setCode] = useState('');
@@ -54,6 +66,8 @@ export default function Admin() {
   const [loading, setLoading] = useState(false);
   const [expandedId, setExpandedId] = useState(null);
   const [filter, setFilter] = useState('all');
+  const [funnelData, setFunnelData] = useState(null);
+  const [showFunnel, setShowFunnel] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -90,8 +104,28 @@ export default function Admin() {
     setLoading(false);
   };
 
+  const fetchFunnel = async () => {
+    try {
+      const snapshot = await getDocs(collection(db, 'funnel_sessions'));
+      const sessions = snapshot.docs.map((d) => d.data());
+      const total = sessions.length;
+      const completed = sessions.filter((s) => s.completed).length;
+      const stepCounts = {};
+      FUNNEL_STEPS.forEach((s) => { stepCounts[s.id] = 0; });
+      sessions.forEach((session) => {
+        (session.steps || []).forEach((stepId) => {
+          if (stepCounts[stepId] !== undefined) stepCounts[stepId]++;
+        });
+        if (session.completed) stepCounts['contact'] = (stepCounts['contact'] || 0) + 1;
+      });
+      setFunnelData({ total, completed, stepCounts });
+    } catch (err) {
+      console.error('Error fetching funnel:', err);
+    }
+  };
+
   useEffect(() => {
-    if (authed) fetchLeads();
+    if (authed) { fetchLeads(); fetchFunnel(); }
   }, [authed]);
 
   const updateStatus = async (leadId, newStatus) => {
@@ -166,6 +200,57 @@ export default function Admin() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Funnel toggle */}
+        <div className="mb-6">
+          <button
+            onClick={() => setShowFunnel(!showFunnel)}
+            className="text-sm font-medium text-emerald-600 hover:text-emerald-700"
+          >
+            {showFunnel ? 'Hide' : 'Show'} Funnel Analytics
+          </button>
+          {showFunnel && funnelData && (
+            <div className="mt-4 bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-bold text-gray-900">Lander Funnel</h3>
+                <div className="flex items-center gap-4 text-sm">
+                  <span className="text-gray-500">{funnelData.total} started</span>
+                  <span className="text-emerald-600 font-semibold">{funnelData.completed} completed</span>
+                  <span className="text-gray-500">
+                    {funnelData.total > 0 ? Math.round((funnelData.completed / funnelData.total) * 100) : 0}% conversion
+                  </span>
+                  <button onClick={fetchFunnel} className="text-emerald-600 hover:text-emerald-700 font-medium">Refresh</button>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {FUNNEL_STEPS.map((step, i) => {
+                  const count = funnelData.stepCounts[step.id] || 0;
+                  const pct = funnelData.total > 0 ? (count / funnelData.total) * 100 : 0;
+                  const prevCount = i === 0 ? funnelData.total : (funnelData.stepCounts[FUNNEL_STEPS[i - 1].id] || 0);
+                  const dropoff = prevCount > 0 ? Math.round(((prevCount - count) / prevCount) * 100) : 0;
+                  return (
+                    <div key={step.id} className="flex items-center gap-3">
+                      <span className="text-xs text-gray-500 w-20 text-right">{step.label}</span>
+                      <div className="flex-1 bg-gray-100 rounded-full h-6 relative overflow-hidden">
+                        <div
+                          className="h-full bg-emerald-500 rounded-full transition-all"
+                          style={{ width: `${pct}%` }}
+                        />
+                        <span className="absolute inset-0 flex items-center justify-center text-xs font-medium text-gray-700">
+                          {count}
+                        </span>
+                      </div>
+                      {i > 0 && dropoff > 0 && (
+                        <span className="text-xs text-red-400 w-16">-{dropoff}%</span>
+                      )}
+                      {i === 0 && <span className="w-16" />}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Filters */}
         <div className="flex flex-wrap gap-2 mb-6">
           <button

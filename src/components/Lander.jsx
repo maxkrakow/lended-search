@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/20/solid';
 import { InlineWidget } from 'react-calendly';
 import { db } from '../firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 
 const CALENDLY = 'https://calendly.com/lended/lended-search-off-market-deal-sourcing';
 
@@ -157,6 +157,10 @@ const caseStudies = [
   },
 ];
 
+function genSessionId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+
 export default function Lander() {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -164,8 +168,40 @@ export default function Lander() {
   const [submitted, setSubmitted] = useState(false);
   const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '' });
   const [validationErrors, setValidationErrors] = useState({});
+  const [sessionId] = useState(() => genSessionId());
+  const [trackedSteps] = useState(() => new Set());
 
   const totalSteps = questions.length;
+
+  // Track step views in Firestore
+  const trackStep = useCallback(async (stepIndex, questionId) => {
+    if (trackedSteps.has(stepIndex)) return;
+    trackedSteps.add(stepIndex);
+    try {
+      const ref = doc(db, 'funnel_sessions', sessionId);
+      if (stepIndex === 0) {
+        await setDoc(ref, {
+          startedAt: serverTimestamp(),
+          source: 'lander',
+          steps: [questionId],
+          lastStep: questionId,
+          completed: false,
+        });
+      } else {
+        await updateDoc(ref, {
+          steps: arrayUnion(questionId),
+          lastStep: questionId,
+        });
+      }
+    } catch (err) {
+      console.error('Track step error:', err);
+    }
+  }, [sessionId, trackedSteps]);
+
+  // Track first step on mount
+  useEffect(() => {
+    trackStep(0, questions[0].id);
+  }, [trackStep]);
 
   const formatAnswers = (raw) => {
     const formatted = { ...raw };
@@ -210,13 +246,17 @@ export default function Lander() {
   const handleSelect = useCallback((questionId, value) => {
     const updated = { ...answers, [questionId]: value };
     setAnswers(updated);
+    const nextStep = currentStep + 1;
+    if (nextStep < questions.length) {
+      trackStep(nextStep, questions[nextStep].id);
+    }
     setTimeout(() => {
       setDirection(1);
       setCurrentStep((s) => s + 1);
     }, 300);
-  }, [answers]);
+  }, [answers, currentStep, trackStep]);
 
-  const handleContactSubmit = useCallback((e) => {
+  const handleContactSubmit = useCallback(async (e) => {
     e.preventDefault();
     const errors = {};
     if (!contactForm.name.trim()) errors.name = 'Name is required';
@@ -237,8 +277,15 @@ export default function Lander() {
       phone: contactForm.phone.trim(),
     };
     submitToFirebase(finalAnswers);
+    // Mark funnel session complete
+    try {
+      await updateDoc(doc(db, 'funnel_sessions', sessionId), {
+        completed: true,
+        completedAt: serverTimestamp(),
+      });
+    } catch (err) { /* ignore */ }
     setSubmitted(true);
-  }, [contactForm, answers, submitToFirebase]);
+  }, [contactForm, answers, submitToFirebase, sessionId]);
 
   const variants = {
     enter: (dir) => ({ x: dir > 0 ? 80 : -80, opacity: 0 }),
