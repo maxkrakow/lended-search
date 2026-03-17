@@ -244,30 +244,27 @@ export default function Lander() {
       return;
     }
 
-    // Save lead to Firebase immediately (triggers GHL webhook)
+    // Advance to next step immediately
+    const nextStep = currentStep + 1;
+    trackStep(nextStep, questions[nextStep].id).catch(() => {});
+    setDirection(1);
+    setCurrentStep((s) => s + 1);
+
+    // Save lead to Firebase in background (triggers GHL webhook)
     const formatted = formatAnswers({
       name: contactForm.name.trim(),
       email: contactForm.email.trim(),
       phone: contactForm.phone.trim(),
     });
-    try {
-      const docRef = await addDoc(collection(db, 'leads'), {
-        ...formatted,
-        source: 'lander',
-        createdAt: serverTimestamp(),
-      });
+    addDoc(collection(db, 'leads'), {
+      ...formatted,
+      source: 'lander',
+      createdAt: serverTimestamp(),
+    }).then((docRef) => {
       setLeadDocId(docRef.id);
-    } catch (err) {
+    }).catch((err) => {
       console.error('Error saving lead:', err);
-    }
-
-    // Advance to qualification questions
-    const nextStep = currentStep + 1;
-    if (nextStep < questions.length) {
-      trackStep(nextStep, questions[nextStep].id);
-    }
-    setDirection(1);
-    setCurrentStep((s) => s + 1);
+    });
   }, [contactForm, currentStep, trackStep]);
 
   const variants = {
