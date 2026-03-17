@@ -152,34 +152,30 @@ export default function Lander() {
 
   const totalSteps = questions.length;
 
-  // Track step views in Firestore
-  const trackStep = useCallback(async (stepIndex, questionId) => {
-    if (trackedSteps.has(stepIndex)) return;
-    trackedSteps.add(stepIndex);
-    try {
-      const ref = doc(db, 'funnel_sessions', sessionId);
-      if (stepIndex === 0) {
-        await setDoc(ref, {
-          startedAt: serverTimestamp(),
-          source: 'lander',
-          steps: [questionId],
-          lastStep: questionId,
-          completed: false,
-        });
-      } else {
-        await updateDoc(ref, {
-          steps: arrayUnion(questionId),
-          lastStep: questionId,
-        });
-      }
-    } catch (err) {
-      console.error('Track step error:', err);
+  // Track step completions in Firestore (only after user takes action)
+  const trackStep = useCallback((stepId) => {
+    if (trackedSteps.has(stepId)) return;
+    trackedSteps.add(stepId);
+    const ref = doc(db, 'funnel_sessions', sessionId);
+    if (trackedSteps.size === 1) {
+      setDoc(ref, {
+        startedAt: serverTimestamp(),
+        source: 'lander',
+        steps: [stepId],
+        lastStep: stepId,
+        completed: false,
+      }).catch(() => {});
+    } else {
+      updateDoc(ref, {
+        steps: arrayUnion(stepId),
+        lastStep: stepId,
+      }).catch(() => {});
     }
   }, [sessionId, trackedSteps]);
 
-  // Track first step on mount
+  // Track page visit on mount
   useEffect(() => {
-    trackStep(0, questions[0].id);
+    trackStep('page_visit');
   }, [trackStep]);
 
   const formatAnswers = (raw) => {
@@ -208,14 +204,14 @@ export default function Lander() {
     const updated = { ...answers, [questionId]: value };
     setAnswers(updated);
 
-    // Update lead doc with this answer
+    // Track this step and update lead doc
+    trackStep(questionId);
     if (leadDocIdRef.current) {
       updateDoc(doc(db, 'leads', leadDocIdRef.current), { [questionId]: value }).catch(() => {});
     }
 
     const nextStep = currentStep + 1;
     if (nextStep < questions.length) {
-      trackStep(nextStep, questions[nextStep].id);
       setTimeout(() => {
         setDirection(1);
         setCurrentStep((s) => s + 1);
@@ -244,10 +240,21 @@ export default function Lander() {
       return;
     }
 
+    // Track contact step completed
+    trackStep('contact');
+
+    // Fire Google Ads conversion
+    if (window.gtag) {
+      window.gtag('event', 'conversion', {
+        send_to: 'AW-17995555560/e37BCPuanoMcEOjF-YRD',
+        value: 1.0,
+        currency: 'USD',
+      });
+    }
+
     // Advance to next step immediately
-    const nextStep = currentStep + 1;
     setDirection(1);
-    setCurrentStep(nextStep);
+    setCurrentStep(currentStep + 1);
 
     // Save lead to Firebase in background (triggers GHL webhook)
     const formatted = formatAnswers({
@@ -261,13 +268,9 @@ export default function Lander() {
       createdAt: serverTimestamp(),
     }).then((docRef) => {
       leadDocIdRef.current = docRef.id;
-      console.log('Lead saved:', docRef.id);
     }).catch((err) => {
       console.error('Error saving lead:', err);
-      console.error('Firebase DB:', db);
-      console.error('Formatted data:', formatted);
     });
-    trackStep(nextStep, questions[nextStep].id).catch(() => {});
   }, [contactForm, currentStep, trackStep]);
 
   const variants = {
@@ -275,18 +278,6 @@ export default function Lander() {
     center: { x: 0, opacity: 1 },
     exit: (dir) => ({ x: dir > 0 ? -80 : 80, opacity: 0 }),
   };
-
-  // Fire Google Ads conversion on form completion
-  useEffect(() => {
-    if (!submitted) return;
-    if (window.gtag) {
-      window.gtag('event', 'conversion', {
-        send_to: 'AW-17995555560/e37BCPuanoMcEOjF-YRD',
-        value: 1.0,
-        currency: 'USD',
-      });
-    }
-  }, [submitted]);
 
   if (submitted) {
     return (

@@ -47,7 +47,8 @@ const FIELD_LABELS = {
 };
 
 const FUNNEL_STEPS = [
-  { id: 'contact', label: 'Contact Info' },
+  { id: 'page_visit', label: 'Page Visit' },
+  { id: 'contact', label: 'Submitted Info' },
   { id: 'motivation', label: 'Situation' },
   { id: 'searcher_type', label: 'Type' },
   { id: 'industry', label: 'Industry' },
