@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/20/solid';
 import { InlineWidget } from 'react-calendly';
@@ -148,7 +148,7 @@ export default function Lander() {
   const [validationErrors, setValidationErrors] = useState({});
   const [sessionId] = useState(() => genSessionId());
   const [trackedSteps] = useState(() => new Set());
-  const [leadDocId, setLeadDocId] = useState(null);
+  const leadDocIdRef = useRef(null);
 
   const totalSteps = questions.length;
 
@@ -207,6 +207,12 @@ export default function Lander() {
   const handleSelect = useCallback((questionId, value) => {
     const updated = { ...answers, [questionId]: value };
     setAnswers(updated);
+
+    // Update lead doc with this answer
+    if (leadDocIdRef.current) {
+      updateDoc(doc(db, 'leads', leadDocIdRef.current), { [questionId]: value }).catch(() => {});
+    }
+
     const nextStep = currentStep + 1;
     if (nextStep < questions.length) {
       trackStep(nextStep, questions[nextStep].id);
@@ -215,20 +221,14 @@ export default function Lander() {
         setCurrentStep((s) => s + 1);
       }, 300);
     } else {
-      // Last question answered — update lead with all qualification data and show Calendly
-      if (leadDocId) {
-        updateDoc(doc(db, 'leads', leadDocId), updated).catch(() => {});
-      }
-      // Mark funnel complete
-      try {
-        updateDoc(doc(db, 'funnel_sessions', sessionId), {
-          completed: true,
-          completedAt: serverTimestamp(),
-        });
-      } catch (err) { /* ignore */ }
+      // Last question — mark funnel complete and show Calendly
+      updateDoc(doc(db, 'funnel_sessions', sessionId), {
+        completed: true,
+        completedAt: serverTimestamp(),
+      }).catch(() => {});
       setTimeout(() => setSubmitted(true), 300);
     }
-  }, [answers, currentStep, trackStep, leadDocId, sessionId]);
+  }, [answers, currentStep, trackStep, sessionId]);
 
   const handleContactSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -244,27 +244,28 @@ export default function Lander() {
       return;
     }
 
-    // Advance to next step immediately
-    const nextStep = currentStep + 1;
-    trackStep(nextStep, questions[nextStep].id).catch(() => {});
-    setDirection(1);
-    setCurrentStep((s) => s + 1);
-
-    // Save lead to Firebase in background (triggers GHL webhook)
+    // Save lead to Firebase first (triggers GHL webhook), then advance
     const formatted = formatAnswers({
       name: contactForm.name.trim(),
       email: contactForm.email.trim(),
       phone: contactForm.phone.trim(),
     });
-    addDoc(collection(db, 'leads'), {
-      ...formatted,
-      source: 'lander',
-      createdAt: serverTimestamp(),
-    }).then((docRef) => {
-      setLeadDocId(docRef.id);
-    }).catch((err) => {
+    try {
+      const docRef = await addDoc(collection(db, 'leads'), {
+        ...formatted,
+        source: 'lander',
+        createdAt: serverTimestamp(),
+      });
+      leadDocIdRef.current = docRef.id;
+    } catch (err) {
       console.error('Error saving lead:', err);
-    });
+    }
+
+    // Advance to next step
+    const nextStep = currentStep + 1;
+    trackStep(nextStep, questions[nextStep].id).catch(() => {});
+    setDirection(1);
+    setCurrentStep((s) => s + 1);
   }, [contactForm, currentStep, trackStep]);
 
   const variants = {
