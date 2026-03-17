@@ -9,6 +9,11 @@ const CALENDLY = 'https://calendly.com/lended/lended-search-off-market-deal-sour
 
 const questions = [
   {
+    id: 'contact',
+    question: 'Get your custom sourcing plan — enter your info below.',
+    type: 'contact',
+  },
+  {
     id: 'motivation',
     question: 'What best describes your situation?',
     type: 'select',
@@ -56,17 +61,6 @@ const questions = [
     ],
   },
   {
-    id: 'location',
-    question: 'Where are you looking to acquire?',
-    type: 'select',
-    options: [
-      { label: 'Specific state or metro area', value: 'specific' },
-      { label: 'Regional (multi-state)', value: 'regional' },
-      { label: 'Nationwide', value: 'nationwide' },
-      { label: 'Open to anywhere', value: 'anywhere' },
-    ],
-  },
-  {
     id: 'readiness',
     question: 'How soon are you looking to close a deal?',
     type: 'select',
@@ -75,17 +69,6 @@ const questions = [
       { label: 'Within 3-6 months', value: '3-6mo' },
       { label: 'Within 6-12 months', value: '6-12mo' },
       { label: 'Just exploring for now', value: 'exploring' },
-    ],
-  },
-  {
-    id: 'current_search',
-    question: 'How are you currently sourcing deals?',
-    type: 'select',
-    options: [
-      { label: 'Brokers and listing sites only', value: 'brokers' },
-      { label: 'Some direct outreach on my own', value: 'some-outreach' },
-      { label: 'Working with another sourcing firm', value: 'other-firm' },
-      { label: 'Haven\'t started yet', value: 'not-started' },
     ],
   },
   {
@@ -113,11 +96,6 @@ const questions = [
         value: 'off-market-national',
       },
     ],
-  },
-  {
-    id: 'contact',
-    question: 'Last step — how do we reach you?',
-    type: 'contact',
   },
 ];
 
@@ -170,6 +148,7 @@ export default function Lander() {
   const [validationErrors, setValidationErrors] = useState({});
   const [sessionId] = useState(() => genSessionId());
   const [trackedSteps] = useState(() => new Set());
+  const [leadDocId, setLeadDocId] = useState(null);
 
   const totalSteps = questions.length;
 
@@ -217,24 +196,6 @@ export default function Lander() {
     return formatted;
   };
 
-  const submitToFirebase = useCallback(async (finalAnswers) => {
-    try {
-      const formatted = formatAnswers(finalAnswers);
-      await addDoc(collection(db, 'leads'), {
-        ...formatted,
-        source: 'lander',
-        createdAt: serverTimestamp(),
-      });
-    } catch (err) {
-      console.error('Error saving lead:', err);
-    }
-  }, []);
-
-  const goNext = useCallback(() => {
-    setDirection(1);
-    setCurrentStep((s) => Math.min(s + 1, totalSteps - 1));
-  }, [totalSteps]);
-
   const goBack = useCallback(() => {
     if (currentStep > 0) {
       setDirection(-1);
@@ -249,12 +210,25 @@ export default function Lander() {
     const nextStep = currentStep + 1;
     if (nextStep < questions.length) {
       trackStep(nextStep, questions[nextStep].id);
+      setTimeout(() => {
+        setDirection(1);
+        setCurrentStep((s) => s + 1);
+      }, 300);
+    } else {
+      // Last question answered — update lead with all qualification data and show Calendly
+      if (leadDocId) {
+        updateDoc(doc(db, 'leads', leadDocId), updated).catch(() => {});
+      }
+      // Mark funnel complete
+      try {
+        updateDoc(doc(db, 'funnel_sessions', sessionId), {
+          completed: true,
+          completedAt: serverTimestamp(),
+        });
+      } catch (err) { /* ignore */ }
+      setTimeout(() => setSubmitted(true), 300);
     }
-    setTimeout(() => {
-      setDirection(1);
-      setCurrentStep((s) => s + 1);
-    }, 300);
-  }, [answers, currentStep, trackStep]);
+  }, [answers, currentStep, trackStep, leadDocId, sessionId]);
 
   const handleContactSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -270,22 +244,31 @@ export default function Lander() {
       return;
     }
 
-    const finalAnswers = {
-      ...answers,
+    // Save lead to Firebase immediately (triggers GHL webhook)
+    const formatted = formatAnswers({
       name: contactForm.name.trim(),
       email: contactForm.email.trim(),
       phone: contactForm.phone.trim(),
-    };
-    submitToFirebase(finalAnswers);
-    // Mark funnel session complete
+    });
     try {
-      await updateDoc(doc(db, 'funnel_sessions', sessionId), {
-        completed: true,
-        completedAt: serverTimestamp(),
+      const docRef = await addDoc(collection(db, 'leads'), {
+        ...formatted,
+        source: 'lander',
+        createdAt: serverTimestamp(),
       });
-    } catch (err) { /* ignore */ }
-    setSubmitted(true);
-  }, [contactForm, answers, submitToFirebase, sessionId]);
+      setLeadDocId(docRef.id);
+    } catch (err) {
+      console.error('Error saving lead:', err);
+    }
+
+    // Advance to qualification questions
+    const nextStep = currentStep + 1;
+    if (nextStep < questions.length) {
+      trackStep(nextStep, questions[nextStep].id);
+    }
+    setDirection(1);
+    setCurrentStep((s) => s + 1);
+  }, [contactForm, currentStep, trackStep]);
 
   const variants = {
     enter: (dir) => ({ x: dir > 0 ? 80 : -80, opacity: 0 }),

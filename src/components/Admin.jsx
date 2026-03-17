@@ -47,15 +47,13 @@ const FIELD_LABELS = {
 };
 
 const FUNNEL_STEPS = [
+  { id: 'contact', label: 'Contact Info' },
   { id: 'motivation', label: 'Situation' },
   { id: 'searcher_type', label: 'Type' },
   { id: 'industry', label: 'Industry' },
   { id: 'deal_size', label: 'Deal Size' },
-  { id: 'location', label: 'Location' },
   { id: 'readiness', label: 'Readiness' },
-  { id: 'current_search', label: 'Sourcing' },
   { id: 'program', label: 'Program' },
-  { id: 'contact', label: 'Contact' },
 ];
 
 export default function Admin() {
