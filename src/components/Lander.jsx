@@ -261,8 +261,11 @@ export default function Lander() {
       createdAt: serverTimestamp(),
     }).then((docRef) => {
       leadDocIdRef.current = docRef.id;
+      console.log('Lead saved:', docRef.id);
     }).catch((err) => {
       console.error('Error saving lead:', err);
+      console.error('Firebase DB:', db);
+      console.error('Formatted data:', formatted);
     });
     trackStep(nextStep, questions[nextStep].id).catch(() => {});
   }, [contactForm, currentStep, trackStep]);
