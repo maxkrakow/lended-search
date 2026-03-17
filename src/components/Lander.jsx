@@ -230,7 +230,7 @@ export default function Lander() {
     }
   }, [answers, currentStep, trackStep, sessionId]);
 
-  const handleContactSubmit = useCallback(async (e) => {
+  const handleContactSubmit = useCallback((e) => {
     e.preventDefault();
     const errors = {};
     if (!contactForm.name.trim()) errors.name = 'Name is required';
@@ -244,28 +244,27 @@ export default function Lander() {
       return;
     }
 
-    // Save lead to Firebase first (triggers GHL webhook), then advance
+    // Advance to next step immediately
+    const nextStep = currentStep + 1;
+    setDirection(1);
+    setCurrentStep(nextStep);
+
+    // Save lead to Firebase in background (triggers GHL webhook)
     const formatted = formatAnswers({
       name: contactForm.name.trim(),
       email: contactForm.email.trim(),
       phone: contactForm.phone.trim(),
     });
-    try {
-      const docRef = await addDoc(collection(db, 'leads'), {
-        ...formatted,
-        source: 'lander',
-        createdAt: serverTimestamp(),
-      });
+    addDoc(collection(db, 'leads'), {
+      ...formatted,
+      source: 'lander',
+      createdAt: serverTimestamp(),
+    }).then((docRef) => {
       leadDocIdRef.current = docRef.id;
-    } catch (err) {
+    }).catch((err) => {
       console.error('Error saving lead:', err);
-    }
-
-    // Advance to next step
-    const nextStep = currentStep + 1;
+    });
     trackStep(nextStep, questions[nextStep].id).catch(() => {});
-    setDirection(1);
-    setCurrentStep((s) => s + 1);
   }, [contactForm, currentStep, trackStep]);
 
   const variants = {
