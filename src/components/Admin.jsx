@@ -230,6 +230,85 @@ const DEMO_ON_MARKET = [
       { step: 'called', date: 'Mar 11, 2:53 PM', note: 'Called broker, left voicemail — callback pending' },
     ],
   },
+  {
+    id: 'on4',
+    name: 'Apex Electrical Contractors',
+    industry: 'Electrical Services',
+    revenue: '$2.6M',
+    sde: '$620K',
+    location: 'Charlotte, NC',
+    askingPrice: '$1.9M',
+    source: 'BizBuySell',
+    listedDate: 'Mar 10',
+    status: 'meeting_booked',
+    searcher: 'Sarah M.',
+    timeToContact: '5 min after listing',
+    timeline: [
+      { step: 'scraped', date: 'Mar 10, 8:45 AM', note: 'Listing detected on BizBuySell — strong match for criteria' },
+      { step: 'texted', date: 'Mar 10, 8:50 AM', note: 'Text sent to broker, 5 min after post' },
+      { step: 'called', date: 'Mar 10, 8:55 AM', note: 'Called broker, connected immediately' },
+      { step: 'meeting_booked', date: 'Mar 10, 9:10 AM', note: 'In-person meeting booked for Mar 13' },
+    ],
+  },
+  {
+    id: 'on5',
+    name: 'Tri-State Pest Control',
+    industry: 'Pest Control',
+    revenue: '$1.5M',
+    sde: '$410K',
+    location: 'Philadelphia, PA',
+    askingPrice: '$1.2M',
+    source: 'BizBuySell',
+    listedDate: 'Mar 12',
+    status: 'texted',
+    searcher: 'Jake P.',
+    timeToContact: '3 min after listing',
+    timeline: [
+      { step: 'scraped', date: 'Mar 12, 10:22 AM', note: 'Listing detected on BizBuySell' },
+      { step: 'texted', date: 'Mar 12, 10:25 AM', note: 'Text sent to broker, 3 min after post — awaiting response' },
+    ],
+  },
+  {
+    id: 'on6',
+    name: 'Mountain View Roofing Co.',
+    industry: 'Roofing',
+    revenue: '$3.8M',
+    sde: '$880K',
+    location: 'Salt Lake City, UT',
+    askingPrice: '$2.9M',
+    source: 'BizBuySell',
+    listedDate: 'Mar 7',
+    status: 'meeting_booked',
+    searcher: 'Sarah M.',
+    timeToContact: '9 min after listing',
+    timeline: [
+      { step: 'scraped', date: 'Mar 7, 3:15 PM', note: 'Listing detected on BizBuySell' },
+      { step: 'texted', date: 'Mar 7, 3:24 PM', note: 'Text sent to broker, 9 min after post' },
+      { step: 'no_response', date: 'Mar 7, 3:34 PM', note: 'No response after 10 min' },
+      { step: 'called', date: 'Mar 7, 3:35 PM', note: 'Called broker, got through, very motivated seller' },
+      { step: 'meeting_booked', date: 'Mar 9', note: 'Meeting booked — broker sending CIM ahead of time' },
+    ],
+  },
+  {
+    id: 'on7',
+    name: 'Coastal Lawn & Garden Services',
+    industry: 'Lawn Care',
+    revenue: '$2.1M',
+    sde: '$540K',
+    location: 'Jacksonville, FL',
+    askingPrice: '$1.7M',
+    source: 'BizBuySell',
+    listedDate: 'Mar 13',
+    status: 'called',
+    searcher: 'Jake P.',
+    timeToContact: '6 min after listing',
+    timeline: [
+      { step: 'scraped', date: 'Mar 13, 11:08 AM', note: 'Listing detected on BizBuySell — recurring revenue model' },
+      { step: 'texted', date: 'Mar 13, 11:14 AM', note: 'Text sent to broker, 6 min after post' },
+      { step: 'no_response', date: 'Mar 13, 11:24 AM', note: 'No response after 10 min' },
+      { step: 'called', date: 'Mar 13, 11:25 AM', note: 'Called broker, scheduled callback for tomorrow' },
+    ],
+  },
 ];
 
 function getStepColor(step, steps, currentStatus) {
@@ -362,12 +441,138 @@ function DemoStatusBadge({ status, steps }) {
   );
 }
 
+const SEARCH_MESSAGES = [
+  'Scanning listing databases...',
+  'Matching to your criteria...',
+  'Checking outreach pipeline...',
+  'Loading results...',
+];
+
 function DemoSection() {
   const [selectedListing, setSelectedListing] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
+  const [industry, setIndustry] = useState('');
+  const [location, setLocation] = useState('');
+  const [phase, setPhase] = useState('filter'); // 'filter' | 'searching' | 'results'
+  const [searchMsgIdx, setSearchMsgIdx] = useState(0);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setPhase('searching');
+    setSearchMsgIdx(0);
+    let idx = 0;
+    const interval = setInterval(() => {
+      idx++;
+      if (idx >= SEARCH_MESSAGES.length) {
+        clearInterval(interval);
+        setTimeout(() => setPhase('results'), 400);
+      } else {
+        setSearchMsgIdx(idx);
+      }
+    }, 700);
+  };
+
+  if (phase === 'filter') {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <form onSubmit={handleSearch} className="w-full max-w-md">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-bold text-gray-900">Search Criteria</h2>
+              <p className="text-sm text-gray-500 mt-1">See results from the past 2 weeks</p>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Industry</label>
+                <select
+                  value={industry}
+                  onChange={(e) => setIndustry(e.target.value)}
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                >
+                  <option value="">All Industries</option>
+                  <option value="Home Services">Home Services</option>
+                  <option value="HVAC">HVAC</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Plumbing">Plumbing</option>
+                  <option value="Electrical Services">Electrical Services</option>
+                  <option value="Pest Control">Pest Control</option>
+                  <option value="Roofing">Roofing</option>
+                  <option value="Lawn Care">Lawn Care</option>
+                  <option value="Pool Services">Pool Services</option>
+                  <option value="Automotive Services">Automotive Services</option>
+                  <option value="Janitorial / Commercial Cleaning">Commercial Cleaning</option>
+                  <option value="Environmental Services">Environmental Services</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                <select
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                >
+                  <option value="">All Locations</option>
+                  <option value="Northeast">Northeast</option>
+                  <option value="Southeast">Southeast</option>
+                  <option value="Midwest">Midwest</option>
+                  <option value="Southwest">Southwest</option>
+                  <option value="West">West</option>
+                  <option value="Northwest">Northwest</option>
+                </select>
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="mt-6 w-full rounded-xl bg-emerald-600 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-all"
+            >
+              Search Listings
+            </button>
+          </div>
+        </form>
+      </div>
+    );
+  }
+
+  if (phase === 'searching') {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center w-12 h-12 mb-4">
+            <div className="w-10 h-10 border-3 border-emerald-200 border-t-emerald-600 rounded-full animate-spin" />
+          </div>
+          <p className="text-sm font-medium text-gray-700">{SEARCH_MESSAGES[searchMsgIdx]}</p>
+          <div className="flex justify-center gap-1.5 mt-4">
+            {SEARCH_MESSAGES.map((_, i) => (
+              <div
+                key={i}
+                className={`w-2 h-2 rounded-full transition-all ${i <= searchMsgIdx ? 'bg-emerald-500' : 'bg-gray-200'}`}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
+      {/* Results header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">Results — Past 2 Weeks</h2>
+          <p className="text-sm text-gray-500 mt-0.5">
+            {DEMO_OFF_MARKET.length} off-market &middot; {DEMO_ON_MARKET.length} on-market listings
+            {(industry || location) && <span> &middot; Filtered by {[industry, location].filter(Boolean).join(', ')}</span>}
+          </p>
+        </div>
+        <button
+          onClick={() => setPhase('filter')}
+          className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+        >
+          New Search
+        </button>
+      </div>
+
       {/* Off Market Section */}
       <div>
         <div className="flex items-center gap-3 mb-4">
