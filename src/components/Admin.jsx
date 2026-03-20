@@ -129,86 +129,86 @@ const INDUSTRIES = [
 ];
 
 const INDUSTRY_NAMES = {
-  'HVAC': ['Summit HVAC','Comfort Air Solutions','Arctic Breeze Heating & Cooling','ProTemp Climate','AllSeason HVAC','Reliable Air Systems','TrueComfort Mechanical','Peak Performance HVAC','CoolWave Air','Heritage Heating & Air'],
-  'Plumbing': ['Reliable Plumbing','FlowRight Plumbing','ClearDrain Plumbing Co.','AquaPipe Solutions','TruFlow Plumbing','Precision Pipe & Drain','AllClear Plumbing','BlueLine Plumbing','PipeMaster Services','WaterWorks Plumbing'],
-  'Electrical': ['Apex Electrical','BrightWire Electric','PowerUp Electrical','CurrentFlow Electric','VoltEdge Electrical','SafeCircuit Electric','ProWire Electrical','SparkPoint Electric','TrueLine Electrical','AmperAge Electric'],
-  'Roofing': ['Mountain View Roofing','SkyShield Roofing','TopGuard Roofing Co.','Pinnacle Roofing','StormProof Roofing','Heritage Roofing','TrueTop Roofing','RidgeLine Roofing','AllWeather Roofing','Ironclad Roofing'],
-  'Landscaping': ['Greenfield Landscaping','ProScape Landscaping','EverGreen Grounds','TerraForm Landscaping','NatureCraft Landscape','Prestige Lawn & Garden','GreenEdge Landscaping','BlueRidge Landscaping','SunValley Grounds','Horizon Landscaping'],
-  'Pest Control': ['Tri-State Pest Control','GuardLine Pest Solutions','ShieldPest Services','BugFree Pest Control','SafeHome Pest Solutions','TruGuard Pest Control','ClearZone Pest','PestShield Pro','DefendAll Pest','NoPest Solutions'],
-  'Pool Services': ['Sunshine Pool & Spa','CrystalClear Pool Care','AquaBlue Pool Services','ProPool Maintenance','BlueWave Pool Co.','SparklePool Services','PrimePool Care','ClearWater Pools','AquaPro Pool Services','TrueBlue Pool'],
-  'Painting': ['ProCoat Painting','FreshFinish Painting','TrueColor Painters','PrimeLine Painting','BrightCoat Painting Co.','Heritage Painting','AllPro Painting','PrecisionCoat Painters','ColorCraft Painting','MasterStroke Painting'],
-  'Flooring': ['ProFloor Installations','TrueStep Flooring','PrimeFloor Co.','AllSurface Flooring','PrecisionFloor Services','Heritage Flooring','CraftFloor Installations','Foundation Flooring','SolidStep Flooring','TopFloor Contractors'],
-  'General Contracting': ['Cornerstone Builders','TrueForm Construction','AllBuild Contractors','PrimeBuild Co.','Heritage Construction','ProBuild Contractors','Keystone General Contracting','SolidRock Builders','Benchmark Construction','TrustBuild Contractors'],
-  'Garage Doors': ['ProLift Garage Doors','AllAccess Door Co.','TrueOpen Garage Doors','PrecisionDoor Services','LiftMaster Garage Co.','GateCraft Doors','SwiftLift Garage','OpenWay Door Services','DoorPro Solutions','ReliaDoor Co.'],
-  'Fencing': ['IronGuard Fencing','ProFence Solutions','TrueLine Fencing','BorderCraft Fencing','AllSecure Fence Co.','Heritage Fencing','PrimeFence Contractors','SteelEdge Fencing','GuardLine Fence','FenceWorks Pro'],
-  'Tree Service': ['ArborCare Tree Service','TopCut Tree Specialists','TrueTimber Tree','Canopy Tree Services','AllGreen Tree Care','SkyReach Tree Service','ProArb Tree Co.','WoodCraft Tree Service','Heritage Tree Care','DeepRoot Tree Service'],
-  'Pressure Washing': ['PowerClean Pressure Washing','SprayPro Services','TrueClean Power Wash','PrimeWash Co.','AllClean Pressure Services','BlastClean Pro','ClearCoat Washing','JetWash Solutions','PureForce Washing','SurfaceClean Pro'],
-  'Insulation': ['ProBarrier Insulation','TrueTemp Insulation','AllSeal Insulation Co.','HeatShield Insulation','PrimeInsulate Services','ComfortSeal Insulation','ThermoGuard Insulation','EcoBarrier Insulation','CoreTemp Insulation','SafeSeal Insulation'],
-  'Window Cleaning': ['CrystalClear Window Cleaning','SparkleView Windows','TrueShine Window Co.','ProPane Window Services','ClearSight Window Cleaning','BrightView Windows','AllClear Window Co.','ShineRight Windows','PureView Cleaning','GlassPro Window'],
-  'Janitorial / Commercial Cleaning': ['Pacific Coast Cleaning','ProShine Janitorial','TrueClean Commercial','AllBright Cleaning Co.','PrimeClean Services','SpotlessPro Janitorial','ClearSpace Cleaning','Heritage Cleaning Services','FreshStart Janitorial','MasterClean Commercial'],
-  'Carpet Cleaning': ['DeepClean Carpet Care','ProFiber Carpet Cleaning','TrueClean Carpet Co.','FreshFiber Services','AllClean Carpet Care','PrimeCarpet Cleaners','SpotFree Carpet','PureSoft Carpet Cleaning','CarpetPro Solutions','SteamRight Carpet'],
-  'Fire Protection': ['FireShield Services','AllSafe Fire Protection','TrueGuard Fire Systems','ProFire Solutions','SafePoint Fire Protection','FireWatch Pro','BlazeSafe Systems','RedLine Fire Protection','FirstAlert Fire Co.','ShieldFire Services'],
-  'Septic Services': ['ClearFlow Septic','ProDrain Septic Services','TruePump Septic Co.','AllClear Septic Solutions','PrimeSeptic Services','DrainRight Septic','FlowMaster Septic','ReliaSeptic Co.','DeepDrain Septic','SafeFlow Septic'],
-  'Auto Body & Collision': ['Northeast Auto Body','ProFinish Collision','TrueForm Auto Body','PrecisionBody Works','AllRestore Auto Body','Heritage Auto Body','PrimeDent Collision','CraftAuto Body Shop','MasterBody Works','AutoEdge Collision'],
-  'Auto Repair & Maintenance': ['TrueWrench Auto Repair','ProMech Auto Services','AllTune Auto Repair','Precision Auto Care','ReliAuto Mechanics','Heritage Auto Repair','PrimeTech Auto','MasterMech Services','FastLane Auto Repair','TrustAuto Maintenance'],
-  'Tire & Wheel': ['ProTire & Wheel','AllGrip Tire Co.','TrueRoll Tire Services','PrimeTread Tire','TireMax Pro','WheelWorks Tire','FastTrack Tire Co.','GripRight Tires','SteadyRoll Tire','TireEdge Services'],
-  'Car Wash': ['SparkleWash Auto Spa','ProShine Car Wash','TrueGloss Car Wash','CrystalClean Auto','AllShine Car Wash','PrimeWash Auto Spa','SplashZone Car Wash','GleamPro Car Wash','AquaShine Car Wash','ShineMaster Auto'],
-  'Towing': ['QuickHook Towing','ProTow Services','TrueHaul Towing','AllRescue Towing','PrimeTow Co.','ReliaTow Services','RapidHook Towing','SafeTow Pro','LiftLine Towing','HeavyDuty Towing'],
-  'Transmission Repair': ['ProShift Transmission','TrueGear Transmission','AllDrive Transmission','PrecisionShift Auto','PrimeTrans Services','GearMaster Transmission','ShiftRight Auto','TransPro Repair','CoreDrive Transmission','ReliaTrans Co.'],
-  'Manufacturing': ['Precision Metal Fabrication','ProBuild Manufacturing','TrueCraft Industries','AllMake Manufacturing','PrimeParts Manufacturing','Heritage Manufacturing','CoreTech Manufacturing','SolidForm Industries','MasterCraft Mfg','BenchMark Manufacturing'],
-  'Metal Fabrication': ['IronEdge Fabrication','ProWeld Metal Works','TrueSteel Fabrication','AllMetal Fabricators','PrimeCut Metal','ForgeWorks Fabrication','SteelCraft Fabrication','MetalPro Solutions','CoreSteel Fabrication','HeavyMetal Works'],
-  'CNC Machining': ['PrecisionCNC Works','ProMill CNC','TrueCut Machining','AllAxis CNC','PrimeMachine Co.','CoreCut CNC','MasterMill Machining','ToolEdge CNC','SpindlePro CNC','AccuCut Machining'],
-  'Plastic Molding': ['ProMold Plastics','TrueForm Molding','AllCast Plastics','PrimeMold Co.','CorePlast Molding','MasterMold Industries','FormRight Plastics','MoldPro Solutions','ShapeCraft Plastics','PrecisionMold Co.'],
-  'Food Manufacturing': ['FreshSource Foods','ProHarvest Manufacturing','TrueTaste Foods','AllNatural Food Co.','PrimeChoice Foods','Heritage Food Manufacturing','CoreFresh Foods','FlavorCraft Manufacturing','PureBatch Foods','GoldenHarvest Mfg'],
-  'Packaging': ['ProPack Solutions','TrueWrap Packaging','AllBox Packaging Co.','PrimePack Industries','CorePack Solutions','SmartPack Co.','WrapRight Packaging','BoxCraft Packaging','SealPro Packaging','SwiftPack Industries'],
-  'Trucking & Freight': ['CrossCountry Freight','ProHaul Trucking','TrueRoute Logistics','AllMiles Trucking','PrimeFreight Co.','Highway Trucking Services','CoreHaul Freight','SwiftLine Trucking','ReliRoute Freight','HeavyHaul Trucking'],
-  'Moving & Storage': ['ProMove Services','TruePack Moving','AllSet Moving & Storage','PrimeMove Co.','SwiftShift Moving','ReliMove Services','CorePack Moving','SafeStore Moving','BoxRight Moving','MasterMove Co.'],
-  'Courier Services': ['QuickDrop Courier','ProDeliver Services','TrueRoute Courier','AllSpeed Courier','PrimeRun Delivery','SwiftDrop Courier','CoreDeliver Co.','RapidRoute Courier','FastTrack Delivery','ReliDeliver Services'],
-  'Waste Management': ['CleanStream Waste','ProDispose Services','TrueGreen Waste Mgmt','AllClear Waste Solutions','PrimeWaste Co.','CoreClean Waste','EcoDispose Services','GreenRoute Waste','SafeStream Waste','ReliWaste Solutions'],
-  'Recycling': ['GreenCycle Recycling','ProReclaim Services','TrueLoop Recycling','AllGreen Recycling','PrimeCycle Co.','CoreRecycle Solutions','EcoLoop Recycling','ReClaimPro Services','PureStream Recycling','RenewCycle Co.'],
-  'Dental Practice': ['BrightSmile Dental','ProCare Dental Group','TrueSmile Dentistry','AllCare Dental','PrimeDental Practice','Heritage Dental','CoreSmile Dental','FreshStart Dental','SmileCraft Dentistry','PrecisionDental Group'],
-  'Veterinary Clinic': ['PawsCare Veterinary','ProPet Vet Clinic','TruePaws Veterinary','AllPets Vet Care','PrimeVet Clinic','Heritage Veterinary','CorePet Vet Services','FurFirst Vet Clinic','AnimalCare Veterinary','PawsPro Vet'],
-  'Physical Therapy': ['ProMotion Physical Therapy','TrueForm PT','AllMove Physical Therapy','PrimeFlex PT','CoreStrength PT','ActiveCare Physical Therapy','FlexPoint PT','MotionPro Physical Therapy','PeakForm PT','VitalMove Physical Therapy'],
-  'Home Health Care': ['CareFirst Home Health','ProCare Home Services','TrueCare Home Health','AllHeart Home Care','PrimeCare Home Health','Heritage Home Care','CoreCare Home Services','ComfortFirst Home Health','SafeHands Home Care','ReliCare Home Health'],
-  'Pharmacy': ['TrueCare Pharmacy','ProScript Pharmacy','AllHealth Pharmacy','PrimeFill Pharmacy','CoreCare Pharmacy','Heritage Pharmacy','FreshScript Pharmacy','MediPro Pharmacy','SafeFill Pharmacy','WellPoint Pharmacy'],
-  'Medical Equipment': ['ProMed Equipment','TrueHealth Supplies','AllMed Equipment Co.','PrimeMed Supplies','CoreHealth Equipment','MedEdge Supplies','SafeMed Equipment','ReliMed Co.','HealthCraft Equipment','MedPro Supply'],
-  'IT Services': ['ProByte IT Services','TrueTech IT Solutions','AllNet IT Services','PrimeTech IT','CoreByte IT','ByteEdge IT Services','TechCraft Solutions','NetPro IT Services','SecureNet IT','ReliTech IT Solutions'],
-  'Managed IT': ['ShieldNet Managed IT','ProManage IT','TrueNet Managed Services','AllSecure Managed IT','PrimeNet IT Management','CoreManage IT','NetGuard Managed IT','TechShield Managed Services','ByteGuard IT','SecureManage IT'],
-  'Cybersecurity': ['CyberShield Security','ProGuard Cyber','TrueSafe Cybersecurity','AllSecure Cyber','PrimeCyber Solutions','CoreSafe Cybersecurity','NetDefend Security','CyberEdge Solutions','ShieldByte Cyber','SafeNet Cybersecurity'],
-  'Software Development': ['CodeCraft Software','ProDev Solutions','TrueCode Software','AllStack Development','PrimeDev Co.','CoreCode Software','ByteCraft Development','DevEdge Solutions','CodePro Software','StackBuild Development'],
-  'Accounting & Bookkeeping': ['TrueBooks Accounting','ProLedger Services','AllCount Bookkeeping','PrimeBooks Accounting','CoreCount Financial','LedgerCraft Accounting','NumbersPro Bookkeeping','AccuBooks Services','SafeLedger Accounting','ReliCount Financial'],
-  'Staffing & Recruiting': ['TalentBridge Staffing','ProHire Recruiting','TrueMatch Staffing','AllTalent Recruiting','PrimeHire Staffing','CoreTalent Recruiting','HireCraft Staffing','StaffEdge Recruiting','SwiftHire Staffing','ReliStaff Recruiting'],
-  'Insurance Agency': ['TrueShield Insurance','ProCover Agency','AllGuard Insurance','PrimeSafe Insurance','CoreCover Agency','ShieldCraft Insurance','SafeHaven Insurance','InsurePro Agency','GuardPoint Insurance','ReliCover Insurance'],
-  'Digital Marketing Agency': ['BrightPixel Marketing','ProReach Digital','TrueClick Marketing','AllGrowth Digital','PrimeReach Agency','CoreClick Marketing','PixelCraft Digital','GrowthEdge Marketing','ClickPro Agency','ReliReach Digital'],
-  'Daycare & Childcare': ['Sunshine Daycare','ProKids Childcare','TrueCare Kids','AllStars Daycare','PrimeKids Childcare','Heritage Daycare','BrightStart Childcare','LittleSteps Daycare','HappyHeart Childcare','SafeNest Daycare'],
-  'Tutoring & Education': ['BrightMinds Tutoring','ProLearn Education','TrueSkill Tutoring','AllGrades Education','PrimeLearn Tutoring','CoreSkill Education','LearnCraft Tutoring','MindEdge Education','SkillPro Tutoring','BrightPath Education'],
-  'Fitness & Gym': ['PeakFit Gym','ProStrength Fitness','TrueGrit Fitness','AllFlex Gym','PrimeFit Fitness','CorePower Gym','FitCraft Fitness','IronEdge Gym','FlexPro Fitness','StrongPoint Gym'],
-  'Salon & Spa': ['Radiance Salon & Spa','ProGlow Salon','TrueBeauty Spa','AllGlam Salon','PrimeGlow Salon & Spa','Heritage Salon','GlowCraft Spa','BlissPoint Salon','LuxeEdge Salon & Spa','SereneSpa'],
-  'Dry Cleaning & Laundry': ['FreshPress Dry Cleaning','ProClean Laundry','TruePress Cleaners','AllFresh Dry Cleaning','PrimePress Laundry','SpotlessPro Cleaners','CrispClean Laundry','CleanCraft Dry Cleaning','FreshFold Laundry','QuickPress Cleaners'],
-  'Restaurant & Food Service': ['Golden Fork Restaurant','ProTaste Food Service','TrueFlavor Kitchen','AllSpice Restaurant','PrimePlate Food Service','Heritage Kitchen','FlavorCraft Restaurant','TasteEdge Food Service','FreshPlate Kitchen','CulinaryPro Restaurant'],
-  'Catering': ['EliteTable Catering','ProFeast Catering','TrueTaste Catering','AllOccasion Catering','PrimeFeast Co.','Heritage Catering','FlavorCraft Catering','EventEdge Catering','FreshFeast Catering','CulinaryPro Catering'],
-  'Bakery': ['Golden Crust Bakery','ProBake Co.','TrueCrust Bakery','AllRise Bakery','PrimeBake Co.','Heritage Bakery','CrustCraft Bakery','FreshRise Bakery','OvenEdge Bakery','BakePro Co.'],
-  'Coffee Shop': ['Bean & Brew Coffee','ProRoast Coffee','TrueBrew Coffee Co.','AllBean Coffee','PrimeBrew Coffee','Heritage Coffee Co.','BrewCraft Coffee','CupEdge Coffee','FreshBean Coffee','RoastPro Coffee'],
-  'Property Management': ['KeyStone Property Mgmt','ProManage Properties','TrueHome Property Mgmt','AllPoint Property','PrimeProperty Management','CoreHome Properties','ManageCraft Property','HomeEdge Property Mgmt','SafeHome Properties','ReliProperty Management'],
-  'Self Storage': ['SecureBox Storage','ProStore Self Storage','TrueKeep Storage','AllSafe Storage','PrimeBox Self Storage','CoreKeep Storage','StoreCraft Storage','LockEdge Self Storage','SafeStore Storage','ReliBox Storage'],
-  'Commercial Real Estate Services': ['PrimeLot Commercial','ProSpace Realty','TrueCommercial Realty','AllPoint Commercial','CoreSpace Commercial','LotCraft Realty','SpaceEdge Commercial','KeyCommercial Realty','SafeLot Commercial','ReliSpace Realty'],
-  'Printing & Signage': ['ProPrint & Sign','TrueMark Printing','AllSign Graphics','PrimePrint Co.','CoreMark Signage','PrintCraft Co.','SignEdge Graphics','BrightMark Printing','InkPro Signage','ReliPrint Co.'],
-  'Industrial Supply': ['ProSupply Industrial','TrueStock Industrial','AllParts Supply','PrimeSource Industrial','CoreSupply Co.','StockCraft Industrial','SupplyEdge Industrial','SafeStock Supply','ReliParts Industrial','BulkPro Supply'],
-  'Safety & Compliance Services': ['SafeFirst Compliance','ProSafe Services','TrueCompliance Co.','AllSafe Compliance','PrimeSafe Services','CoreCompliance Co.','SafeCraft Services','CompliEdge Solutions','GuardPro Compliance','ReliSafe Services'],
-  'Environmental Services': ['Cascade Environmental','ProGreen Environmental','TrueEco Services','AllClean Environmental','PrimeEco Services','CoreGreen Environmental','EcoCraft Services','GreenEdge Environmental','SafeEco Services','ReliGreen Environmental'],
-  'Water Treatment': ['PureFlow Water Treatment','ProWater Solutions','TrueFlow Water','AllClear Water Treatment','PrimeWater Co.','CoreFlow Water','WaterCraft Treatment','FlowEdge Water','SafeWater Solutions','ReliFlow Water Treatment'],
-  'Demolition': ['ProDemo Services','TrueWreck Demolition','AllClear Demo','PrimeDemo Co.','CoreDemo Services','DemoCraft Co.','WreckEdge Demolition','BlastPro Demo','SafeDemo Services','ReliDemo Co.'],
-  'Concrete & Masonry': ['SolidForm Concrete','ProMason Services','TrueStone Masonry','AllCrete Concrete','PrimeMason Co.','CoreStone Masonry','MasonCraft Co.','StoneEdge Concrete','SafeCrete Services','ReliMason Concrete'],
-  'Security Services': ['ShieldForce Security','ProGuard Services','TrueSafe Security','AllWatch Security','PrimeSafe Security','CoreGuard Services','GuardCraft Security','WatchEdge Security','SafeForce Security','ReliGuard Services'],
-  'Alarm & Surveillance': ['AlertPro Systems','ProWatch Surveillance','TrueAlert Alarm','AllWatch Alarm Co.','PrimeAlert Systems','CoreWatch Surveillance','AlarmCraft Systems','WatchEdge Alarm','SafeAlert Systems','ReliWatch Surveillance'],
-  'Locksmith': ['KeyMaster Locksmith','ProLock Services','TrueKey Locksmith','AllLock Locksmith','PrimeLock Co.','CoreKey Locksmith','LockCraft Services','KeyEdge Locksmith','SafeLock Services','ReliKey Locksmith'],
-  'Welding': ['IronBond Welding','ProWeld Services','TrueArc Welding','AllWeld Co.','PrimeWeld Services','CoreArc Welding','WeldCraft Co.','ArcEdge Welding','SafeWeld Services','ReliArc Welding'],
-  'Machine Shop': ['PrecisionWorks Machine Shop','ProTool Machine','TrueCut Machine Shop','AllAxis Machine Co.','PrimeTool Machine Shop','CoreCut Machine','MachineCraft Shop','ToolEdge Machine','SafeCut Machine Shop','ReliTool Machine'],
-  'HVAC Distribution': ['AirFlow Supply','ProAir Distribution','TrueTemp Supply','AllAir Distribution','PrimeAir Supply','CoreTemp Distribution','AirCraft Supply','TempEdge Distribution','SafeAir Supply','ReliAir Distribution'],
-  'Plumbing Supply': ['PipeLine Supply','ProPipe Distribution','TrueFlow Supply','AllPipe Supply','PrimePipe Distribution','CoreFlow Supply','PipeCraft Distribution','FlowEdge Supply','SafePipe Supply','ReliPipe Distribution'],
-  'Agriculture & Farming': ['GreenAcre Farms','ProHarvest Agriculture','TrueGrow Farms','AllSeason Agriculture','PrimeField Farms','Heritage Agriculture','GrowCraft Farms','FieldEdge Agriculture','FreshAcre Farms','ReliGrow Agriculture'],
-  'Nursery & Garden Center': ['BloomField Nursery','ProGrow Garden Center','TrueBloom Nursery','AllGreen Garden Center','PrimeBloom Nursery','Heritage Garden Center','GrowCraft Nursery','GardenEdge Nursery','FreshBloom Garden','ReliGrow Nursery'],
-  'Pet Services': ['PawsPro Pet Care','ProPet Services','TruePaws Pet Care','AllPets Services','PrimePaws Pet Care','HappyTails Pet Services','PawsCraft Pet Care','PetEdge Services','SafePaws Pet Care','ReliPet Services'],
+  'HVAC': ['Summit Comfort Systems','Northwind Heating & Cooling','Valley Air Mechanical','Redline Climate Control','Four Seasons Air','Copperline Mechanical','Bridgewater HVAC','Orion Air Services','Clearview Comfort','Westfield Heating & Air'],
+  'Plumbing': ['Copperstone Plumbing','Bayview Pipe & Drain','Ironflow Services','Lakeside Plumbing Co.','Ridgeway Drain Solutions','Harbor Plumbing Group','Stonebridge Pipe Works','Valley Creek Plumbing','Clearwater Drain Co.','Oakmont Plumbing'],
+  'Electrical': ['Brightline Electric Co.','Redstone Electrical Services','Copperfield Electric','Bayshore Power Solutions','Westgate Electric Group','Ironridge Electrical','Summit Power Co.','Lakewood Electric','Clearpath Electrical Services','Bridgeport Electric'],
+  'Roofing': ['Ridgeline Construction','Summit Exteriors','Coppertop Contractors','Ironside Building Co.','Westwind Exteriors','Bayview Restoration','Stonewall Contractors','Valley Crest Builders','Northpoint Exteriors','Heritage Building Group'],
+  'Landscaping': ['Greenstone Property Care','Lakeside Grounds Management','Valley View Land Co.','Bridgewater Outdoor Services','Ironwood Landscapes','Clearfield Property Maintenance','Bayshore Grounds Co.','Westgate Outdoor Solutions','Oakridge Land Management','Copperleaf Outdoors'],
+  'Pest Control': ['Sentinel Home Services','Ridgeback Solutions','Clearline Home Protection','Baypoint Pest Management','Irongate Environmental','Valley Shield Services','Westbrook Home Solutions','Lakewood Environmental Co.','Bridgeway Home Services','Stonewall Protection'],
+  'Pool Services': ['Clearwater Aquatics','Bayshore Pool Management','Lakeside Water Services','Stonegate Pools & Spa','Ridgeview Aquatic Co.','Westfield Pool Management','Copperspring Pools','Valley Blue Aquatics','Bridgewater Pool Co.','Summit Aquatic Services'],
+  'Painting': ['Brushline Finishings','Ridgeview Coatings Co.','Clearcoat Finishings','Bayport Painting Co.','Ironside Surface Works','Westlake Finishings','Valley View Coatings','Bridgeway Painting Group','Lakeside Finishings Co.','Copperfield Coatings'],
+  'Flooring': ['Stonegate Floors','Ridgewood Surface Co.','Clearpath Flooring Group','Bayview Floor Works','Ironwood Floor Co.','Westfield Surface Solutions','Valley Oak Flooring','Bridgeway Floors','Lakeside Floor Installations','Copperstone Surfaces'],
+  'General Contracting': ['Cornerstone Builders','Ridgepoint Construction','Bayview Building Group','Ironside Contractors','Westgate Construction Co.','Valley Summit Builders','Bridgewater General Contractors','Lakewood Building Co.','Clearfield Construction','Stonegate Builders'],
+  'Garage Doors': ['Irongate Door Systems','Valley Access Co.','Ridgeline Door Works','Clearview Garage Solutions','Baypoint Door Co.','Westfield Door Systems','Bridgeway Access','Lakeside Door Works','Copperline Garage Co.','Stonegate Door Services'],
+  'Fencing': ['Ironside Fence & Gate','Ridgeline Fence Co.','Valley Perimeter Solutions','Clearfield Fence Works','Bayshore Fence Group','Westgate Fence Co.','Bridgewater Fence & Rail','Lakewood Fence Systems','Copperstone Fencing','Stonegate Perimeter'],
+  'Tree Service': ['Canopy Arborists','Ridgewood Tree Specialists','Valley Timber Services','Clearfield Arborcare','Ironwood Tree Co.','Bayshore Tree Specialists','Westlake Arbor Services','Bridgeway Tree Care','Lakeside Arborists','Stonegate Tree Co.'],
+  'Pressure Washing': ['Clearcoat Surface Restoration','Ridgepoint Cleaning Co.','Valley Clean Exterior Services','Bayshore Surface Co.','Ironside Exterior Cleaning','Westlake Surface Restoration','Bridgeway Exterior Co.','Lakeside Surface Cleaning','Copperfield Cleaning','Stonegate Exteriors'],
+  'Insulation': ['Ridgeline Weatherproofing','Valley Barrier Co.','Clearfield Thermal Solutions','Ironside Insulation Co.','Baypoint Weatherization','Westgate Thermal Services','Bridgeway Insulation Group','Lakewood Barrier Co.','Copperline Thermal','Stonegate Weatherproofing'],
+  'Window Cleaning': ['Clearview Glass Services','Ridgepoint Window Co.','Valley Shine Services','Bayshore Glass Care','Ironside Window Pros','Westlake Glass Co.','Bridgeway Window Services','Lakeside Glass Care','Copperfield Window Co.','Stonegate Glass Services'],
+  'Janitorial / Commercial Cleaning': ['Clearspace Facility Services','Ridgepoint Commercial Maintenance','Valley Clean Solutions','Bayshore Facility Group','Ironside Building Services','Westgate Commercial Cleaning','Bridgeway Facility Co.','Lakewood Maintenance Group','Copperfield Services','Stonegate Facility Management'],
+  'Carpet Cleaning': ['Valley Fresh Restoration','Ridgepoint Fiber Care','Clearfield Floor Restoration','Bayshore Carpet Co.','Ironside Fiber Services','Westlake Restoration','Bridgeway Floor Care','Lakeside Carpet Restoration','Copperfield Fiber Co.','Stonegate Floor Services'],
+  'Fire Protection': ['Redline Safety Systems','Valley Fire Solutions','Ridgepoint Life Safety','Clearfield Fire Co.','Bayshore Fire Protection','Irongate Safety','Westlake Fire Systems','Bridgeway Safety Co.','Lakewood Fire Services','Stonegate Life Safety'],
+  'Septic Services': ['Valley Flow Environmental','Ridgeline Septic Co.','Clearfield Drain Services','Baypoint Septic Solutions','Ironside Environmental Services','Westlake Septic Co.','Bridgeway Drain Solutions','Lakewood Septic Services','Copperfield Environmental','Stonegate Drain Co.'],
+  'Auto Body & Collision': ['Ridgeline Collision Center','Valley Auto Restoration','Clearfield Body Works','Bayshore Collision Repair','Ironside Auto Body','Westgate Collision Center','Bridgeway Auto Restoration','Lakeside Body Shop','Copperfield Collision','Stonegate Auto Works'],
+  'Auto Repair & Maintenance': ['Valley Automotive Group','Ridgepoint Auto Care','Clearfield Automotive','Bayshore Motor Works','Ironside Auto Service','Westlake Automotive','Bridgeway Auto Group','Lakewood Motor Co.','Copperfield Auto Care','Stonegate Automotive'],
+  'Tire & Wheel': ['Valley Tire & Auto','Ridgeline Tire Center','Clearfield Tire Co.','Bayshore Tire & Wheel','Ironside Tire Services','Westgate Tire Center','Bridgeway Tire Co.','Lakewood Tire & Auto','Copperfield Tire','Stonegate Tire Center'],
+  'Car Wash': ['Clearshine Auto Spa','Valley Wash Co.','Ridgepoint Auto Detailing','Bayshore Car Care','Ironside Auto Spa','Westlake Car Wash','Bridgeway Auto Detailing','Lakeside Car Care','Copperfield Auto Wash','Stonegate Auto Spa'],
+  'Towing': ['Valley Recovery Services','Ridgeline Towing & Recovery','Clearfield Roadside Co.','Bayshore Recovery','Ironside Towing','Westgate Recovery Services','Bridgeway Towing Co.','Lakewood Roadside','Copperfield Recovery','Stonegate Towing'],
+  'Transmission Repair': ['Valley Drivetrain Specialists','Ridgeline Transmission Co.','Clearfield Drivetrain','Bayshore Transmission Center','Ironside Drivetrain','Westlake Transmission','Bridgeway Drivetrain Co.','Lakewood Transmission Center','Copperfield Drivetrain','Stonegate Transmission'],
+  'Manufacturing': ['Precision Metalworks Inc.','Valley Industrial Co.','Ridgeline Manufacturing Group','Clearfield Industries','Bayshore Manufacturing','Ironside Industrial','Westgate Manufacturing Co.','Bridgeway Industries','Lakewood Manufacturing Group','Stonegate Industrial'],
+  'Metal Fabrication': ['Ironforge Metalworks','Valley Steel Fabricators','Ridgeline Metal Co.','Clearfield Steel Works','Bayshore Fabrication','Westgate Metal Works','Bridgeway Steel Co.','Lakewood Fabricators','Copperfield Metalworks','Stonegate Steel Fabrication'],
+  'CNC Machining': ['Valley Precision Machining','Ridgeline CNC Co.','Clearfield Machine Works','Bayshore Precision Co.','Ironside Machining','Westgate Machine Works','Bridgeway Precision','Lakewood CNC Services','Copperfield Machining','Stonegate Precision Co.'],
+  'Plastic Molding': ['Valley Polymer Solutions','Ridgeline Plastics Co.','Clearfield Molding Group','Bayshore Polymer Co.','Ironside Plastics','Westgate Molding','Bridgeway Plastics','Lakewood Polymer Group','Copperfield Molding Co.','Stonegate Plastics'],
+  'Food Manufacturing': ['Valley Harvest Foods','Ridgeline Food Co.','Clearfield Foods Inc.','Bayshore Food Manufacturing','Ironside Foods','Westgate Food Co.','Bridgeway Foods Inc.','Lakewood Food Group','Copperfield Foods','Stonegate Food Manufacturing'],
+  'Packaging': ['Valley Pack Solutions','Ridgeline Packaging Co.','Clearfield Pack Group','Bayshore Packaging','Ironside Pack Co.','Westgate Packaging Solutions','Bridgeway Packaging','Lakewood Pack Group','Copperfield Packaging','Stonegate Pack Co.'],
+  'Trucking & Freight': ['Valley Line Freight','Ridgeline Logistics','Clearfield Transport Co.','Bayshore Freight Services','Ironside Logistics','Westgate Trucking Co.','Bridgeway Transport','Lakewood Freight Group','Copperfield Logistics','Stonegate Transport'],
+  'Moving & Storage': ['Valley Relocation Services','Ridgeline Moving Co.','Clearfield Moving & Storage','Bayshore Relocation','Ironside Moving Group','Westgate Movers','Bridgeway Relocation','Lakewood Moving Co.','Copperfield Movers','Stonegate Relocation'],
+  'Courier Services': ['Valley Express Delivery','Ridgeline Courier Co.','Clearfield Express','Bayshore Delivery Services','Ironside Courier','Westgate Express Co.','Bridgeway Delivery','Lakewood Courier','Copperfield Express','Stonegate Delivery Co.'],
+  'Waste Management': ['Valley Environmental Services','Ridgeline Waste Co.','Clearfield Disposal Group','Bayshore Waste Solutions','Ironside Environmental','Westgate Waste Services','Bridgeway Disposal','Lakewood Waste Management','Copperfield Environmental','Stonegate Waste Co.'],
+  'Recycling': ['Valley Green Recycling','Ridgeline Reclamation','Clearfield Recycling Co.','Bayshore Green Solutions','Ironside Recycling','Westgate Reclamation','Bridgeway Recycling','Lakewood Green Co.','Copperfield Recycling','Stonegate Reclamation'],
+  'Dental Practice': ['Valley Dental Associates','Ridgeview Family Dental','Clearfield Dental Group','Bayshore Dental Care','Ironside Dental','Westlake Dental Associates','Bridgeway Dental Group','Lakewood Family Dental','Copperfield Dental','Stonegate Dental Care'],
+  'Veterinary Clinic': ['Valley Animal Hospital','Ridgeview Veterinary Care','Clearfield Animal Clinic','Bayshore Veterinary Group','Ironside Animal Hospital','Westlake Vet Clinic','Bridgeway Animal Care','Lakewood Veterinary','Copperfield Animal Clinic','Stonegate Vet Care'],
+  'Physical Therapy': ['Valley Rehabilitation Center','Ridgeview Physical Therapy','Clearfield Rehab Group','Bayshore Physical Therapy','Ironside Rehabilitation','Westlake PT Associates','Bridgeway Rehab','Lakewood Physical Therapy','Copperfield Rehabilitation','Stonegate PT Group'],
+  'Home Health Care': ['Valley Home Health Services','Ridgeview Home Care','Clearfield Home Health','Bayshore Home Services','Ironside Home Care','Westlake Home Health','Bridgeway Home Care','Lakewood Home Health','Copperfield Home Services','Stonegate Home Care'],
+  'Pharmacy': ['Valley Pharmacy Group','Ridgeview Drug Co.','Clearfield Pharmacy','Bayshore Pharmacy','Ironside Drug Co.','Westlake Pharmacy','Bridgeway Drug Co.','Lakewood Pharmacy Group','Copperfield Pharmacy','Stonegate Drug Co.'],
+  'Medical Equipment': ['Valley Medical Supply','Ridgeview Med Equipment','Clearfield Medical Co.','Bayshore Medical Supply','Ironside Medical Equipment','Westlake Med Supply','Bridgeway Medical Co.','Lakewood Medical Equipment','Copperfield Med Supply','Stonegate Medical Co.'],
+  'IT Services': ['Valley Technology Group','Ridgepoint IT Solutions','Clearfield Technology','Bayshore IT Group','Ironside Technology Services','Westlake IT Solutions','Bridgeway Technology','Lakewood IT Group','Copperfield Technology','Stonegate IT Services'],
+  'Managed IT': ['Valley Network Solutions','Ridgepoint Managed Services','Clearfield IT Management','Bayshore Network Group','Ironside Managed Services','Westlake Network Solutions','Bridgeway IT Management','Lakewood Managed IT','Copperfield Network Co.','Stonegate Managed Services'],
+  'Cybersecurity': ['Valley Security Technologies','Ridgepoint Cyber Group','Clearfield Security Co.','Bayshore Cyber Solutions','Ironside Security Technologies','Westlake Cyber Group','Bridgeway Security Co.','Lakewood Cyber Solutions','Copperfield Security','Stonegate Cyber Group'],
+  'Software Development': ['Valley Software Co.','Ridgepoint Digital','Clearfield Software Group','Bayshore Digital Solutions','Ironside Software Co.','Westlake Digital','Bridgeway Software Group','Lakewood Digital Co.','Copperfield Software','Stonegate Digital Solutions'],
+  'Accounting & Bookkeeping': ['Valley Financial Services','Ridgeview Accounting Group','Clearfield Financial Co.','Bayshore Accounting','Ironside Financial Services','Westlake Accounting Group','Bridgeway Financial','Lakewood Accounting Co.','Copperfield Financial','Stonegate Accounting Group'],
+  'Staffing & Recruiting': ['Valley Talent Group','Ridgepoint Staffing','Clearfield Talent Solutions','Bayshore Staffing Co.','Ironside Talent Group','Westlake Staffing','Bridgeway Talent Co.','Lakewood Staffing Group','Copperfield Talent','Stonegate Staffing'],
+  'Insurance Agency': ['Valley Insurance Associates','Ridgeview Insurance Group','Clearfield Insurance Co.','Bayshore Insurance Agency','Ironside Insurance','Westlake Insurance Group','Bridgeway Insurance Co.','Lakewood Insurance Associates','Copperfield Insurance','Stonegate Insurance Group'],
+  'Digital Marketing Agency': ['Valley Digital Group','Ridgepoint Marketing Co.','Clearfield Digital Agency','Bayshore Marketing Group','Ironside Digital','Westlake Marketing Co.','Bridgeway Digital Agency','Lakewood Marketing Group','Copperfield Digital','Stonegate Marketing Co.'],
+  'Daycare & Childcare': ['Valley Kids Academy','Ridgeview Learning Center','Clearfield Children\'s Academy','Bayshore Kids Academy','Ironside Learning Center','Westlake Children\'s Center','Bridgeway Kids Academy','Lakewood Learning Center','Copperfield Children\'s Academy','Stonegate Kids Center'],
+  'Tutoring & Education': ['Valley Learning Group','Ridgeview Education Co.','Clearfield Learning Center','Bayshore Education Group','Ironside Learning Co.','Westlake Education','Bridgeway Learning Center','Lakewood Education Group','Copperfield Learning','Stonegate Education Co.'],
+  'Fitness & Gym': ['Valley Fitness Co.','Ridgepoint Athletics','Clearfield Fitness Center','Bayshore Athletics','Ironside Fitness','Westlake Athletic Club','Bridgeway Fitness Co.','Lakewood Athletics','Copperfield Fitness Center','Stonegate Athletic Club'],
+  'Salon & Spa': ['Valley Beauty & Wellness','Ridgeview Salon Co.','Clearfield Day Spa','Bayshore Beauty','Ironside Salon & Wellness','Westlake Day Spa','Bridgeway Beauty Co.','Lakewood Salon & Spa','Copperfield Beauty','Stonegate Day Spa'],
+  'Dry Cleaning & Laundry': ['Valley Cleaners','Ridgeview Dry Cleaning Co.','Clearfield Cleaners','Bayshore Laundry Co.','Ironside Cleaners','Westlake Dry Cleaning','Bridgeway Cleaners','Lakewood Laundry Co.','Copperfield Cleaners','Stonegate Dry Cleaning'],
+  'Restaurant & Food Service': ['Valley Table Restaurant','Ridgeview Kitchen & Bar','Clearfield Grille','Bayshore Restaurant Group','Ironside Kitchen','Westlake Dining Co.','Bridgeway Restaurant Group','Lakewood Grille','Copperfield Kitchen','Stonegate Restaurant Co.'],
+  'Catering': ['Valley Events & Catering','Ridgeview Catering Co.','Clearfield Event Catering','Bayshore Catering Group','Ironside Events','Westlake Catering Co.','Bridgeway Catering','Lakewood Events Co.','Copperfield Catering','Stonegate Events & Catering'],
+  'Bakery': ['Valley Bread Company','Ridgeview Baking Co.','Clearfield Bakehouse','Bayshore Bread Co.','Ironside Baking','Westlake Bakehouse','Bridgeway Bread Co.','Lakewood Baking Co.','Copperfield Bakehouse','Stonegate Bread Company'],
+  'Coffee Shop': ['Valley Roasters','Ridgeview Coffee Co.','Clearfield Coffee House','Bayshore Roasters','Ironside Coffee Co.','Westlake Coffee House','Bridgeway Roasters','Lakewood Coffee Co.','Copperfield Coffee House','Stonegate Roasters'],
+  'Property Management': ['Valley Property Group','Ridgeview Management Co.','Clearfield Property Management','Bayshore Property Group','Ironside Management','Westlake Property Co.','Bridgeway Management Group','Lakewood Property Management','Copperfield Properties','Stonegate Management Co.'],
+  'Self Storage': ['Valley Storage Co.','Ridgeview Storage Centers','Clearfield Storage','Bayshore Storage Co.','Ironside Storage Centers','Westlake Storage','Bridgeway Storage Co.','Lakewood Storage Centers','Copperfield Storage','Stonegate Storage Co.'],
+  'Commercial Real Estate Services': ['Valley Commercial Group','Ridgeview Commercial Realty','Clearfield Commercial Co.','Bayshore Commercial Group','Ironside Commercial Realty','Westlake Commercial Co.','Bridgeway Commercial Group','Lakewood Commercial Realty','Copperfield Commercial','Stonegate Commercial Co.'],
+  'Printing & Signage': ['Valley Print & Sign Co.','Ridgeview Graphics','Clearfield Print Co.','Bayshore Sign & Print','Ironside Graphics','Westlake Print Co.','Bridgeway Sign & Graphics','Lakewood Print Group','Copperfield Graphics','Stonegate Print & Sign'],
+  'Industrial Supply': ['Valley Industrial Supply','Ridgeview Supply Co.','Clearfield Industrial','Bayshore Supply Group','Ironside Industrial Supply','Westlake Supply Co.','Bridgeway Industrial','Lakewood Supply Group','Copperfield Industrial Supply','Stonegate Supply Co.'],
+  'Safety & Compliance Services': ['Valley Safety Consultants','Ridgeview Compliance Group','Clearfield Safety Co.','Bayshore Compliance Services','Ironside Safety Group','Westlake Compliance','Bridgeway Safety Co.','Lakewood Compliance Group','Copperfield Safety','Stonegate Compliance Co.'],
+  'Environmental Services': ['Valley Environmental Group','Ridgeline Environmental Co.','Clearfield Environmental','Bayshore Environmental Services','Ironside Environmental Group','Westlake Environmental','Bridgeway Environmental Co.','Lakewood Environmental Group','Copperfield Environmental Services','Stonegate Environmental'],
+  'Water Treatment': ['Valley Water Solutions','Ridgeline Water Co.','Clearfield Water Services','Bayshore Water Treatment','Ironside Water Solutions','Westlake Water Co.','Bridgeway Water Services','Lakewood Water Treatment','Copperfield Water Solutions','Stonegate Water Co.'],
+  'Demolition': ['Valley Demolition Co.','Ridgeline Wrecking','Clearfield Demolition Services','Bayshore Demolition','Ironside Wrecking Co.','Westlake Demolition','Bridgeway Wrecking','Lakewood Demolition Co.','Copperfield Wrecking','Stonegate Demolition'],
+  'Concrete & Masonry': ['Valley Concrete & Stone','Ridgeline Masonry Co.','Clearfield Concrete Works','Bayshore Stone & Masonry','Ironside Concrete Co.','Westlake Masonry','Bridgeway Concrete Works','Lakewood Stone Co.','Copperfield Masonry','Stonegate Concrete'],
+  'Security Services': ['Valley Security Group','Ridgeline Protection Services','Clearfield Security Co.','Bayshore Security Group','Ironside Protection','Westlake Security Services','Bridgeway Protection Co.','Lakewood Security Group','Copperfield Security Services','Stonegate Protection'],
+  'Alarm & Surveillance': ['Valley Alarm Systems','Ridgeline Surveillance Co.','Clearfield Alarm Services','Bayshore Alarm & Monitoring','Ironside Alarm Co.','Westlake Surveillance','Bridgeway Alarm Systems','Lakewood Monitoring Co.','Copperfield Alarm','Stonegate Surveillance'],
+  'Locksmith': ['Valley Lock & Key','Ridgeline Locksmith Co.','Clearfield Lock Services','Bayshore Lock & Key','Ironside Locksmith','Westlake Lock Co.','Bridgeway Lock & Key','Lakewood Locksmith Co.','Copperfield Lock Services','Stonegate Lock & Key'],
+  'Welding': ['Valley Welding & Fabrication','Ridgeline Welding Co.','Clearfield Welding Services','Bayshore Welding & Fab','Ironside Welding Co.','Westlake Welding','Bridgeway Welding & Fab','Lakewood Welding Co.','Copperfield Welding','Stonegate Welding Services'],
+  'Machine Shop': ['Valley Precision Machine','Ridgeline Machine Works','Clearfield Machine Co.','Bayshore Precision','Ironside Machine Works','Westlake Machine Co.','Bridgeway Precision Machine','Lakewood Machine Works','Copperfield Machine Co.','Stonegate Precision'],
+  'HVAC Distribution': ['Valley Air Supply Co.','Ridgeline HVAC Distribution','Clearfield Air Supply','Bayshore HVAC Supply','Ironside Air Distribution','Westlake HVAC Supply','Bridgeway Air Supply','Lakewood HVAC Distribution','Copperfield Air Supply','Stonegate HVAC Distribution'],
+  'Plumbing Supply': ['Valley Plumbing Supply Co.','Ridgeline Pipe & Supply','Clearfield Plumbing Supply','Bayshore Pipe Supply','Ironside Plumbing Distribution','Westlake Pipe & Supply','Bridgeway Plumbing Supply','Lakewood Pipe Supply','Copperfield Plumbing Supply','Stonegate Pipe & Supply'],
+  'Agriculture & Farming': ['Valley Farms Inc.','Ridgeline Agricultural Co.','Clearfield Farms','Bayshore Agriculture','Ironside Farms Inc.','Westlake Agricultural Co.','Bridgeway Farms','Lakewood Agriculture','Copperfield Farms','Stonegate Agricultural'],
+  'Nursery & Garden Center': ['Valley Garden Center','Ridgeview Nursery Co.','Clearfield Garden Center','Bayshore Nursery','Ironside Garden Center','Westlake Nursery Co.','Bridgeway Garden Center','Lakewood Nursery','Copperfield Garden Center','Stonegate Nursery Co.'],
+  'Pet Services': ['Valley Pet Care Co.','Ridgeview Animal Services','Clearfield Pet Care','Bayshore Pet Services','Ironside Animal Care','Westlake Pet Co.','Bridgeway Pet Services','Lakewood Animal Care','Copperfield Pet Services','Stonegate Pet Care'],
 };
 
 const SEARCHERS = ['Jake P.', 'Sarah M.', 'Chris D.', 'Emily R.', 'Michael T.'];
@@ -534,21 +534,21 @@ function DemoSection() {
 
   if (phase === 'filter') {
     return (
-      <div className="flex items-center justify-center min-h-[70vh]">
-        <form onSubmit={handleSearch} className="w-full max-w-lg">
-          <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
-            <div className="bg-gradient-to-br from-emerald-600 to-emerald-700 px-8 py-10 text-center">
-              <img src="/logo.png" alt="Lended Search" className="h-10 mx-auto mb-4 brightness-0 invert" />
-              <h2 className="text-2xl font-bold text-white">See Your Deal Flow</h2>
-              <p className="text-emerald-100 text-sm mt-2">Preview results from the past 2 weeks</p>
+      <div>
+        {/* Filter bar */}
+        <form onSubmit={handleSearch}>
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-2 h-2 rounded-full bg-emerald-500" />
+              <h3 className="text-sm font-bold text-gray-900">Search Criteria</h3>
             </div>
-            <div className="px-8 py-8 space-y-6">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Target Industry</label>
+            <div className="flex items-end gap-4">
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1.5">Industry</label>
                 <select
                   value={industry}
                   onChange={(e) => setIndustry(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all appearance-none"
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
                 >
                   <option value="">All Industries</option>
                   {INDUSTRIES.map(ind => (
@@ -556,12 +556,12 @@ function DemoSection() {
                   ))}
                 </select>
               </div>
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Target State</label>
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-gray-500 mb-1.5">State</label>
                 <select
                   value={state}
                   onChange={(e) => setState(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all appearance-none"
+                  className="w-full rounded-lg border border-gray-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
                 >
                   <option value="">All States</option>
                   {US_STATES.map(s => (
@@ -571,14 +571,22 @@ function DemoSection() {
               </div>
               <button
                 type="submit"
-                className="w-full rounded-xl bg-emerald-600 py-4 text-sm font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all shadow-md shadow-emerald-200"
+                className="rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-emerald-700 transition-all whitespace-nowrap"
               >
-                Search Listings
+                Search
               </button>
-              <p className="text-xs text-gray-400 text-center">Results are from the most recent 2-week window</p>
             </div>
           </div>
         </form>
+
+        {/* Empty state */}
+        <div className="flex flex-col items-center justify-center py-32 text-center">
+          <svg className="w-10 h-10 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+          <p className="text-sm font-medium text-gray-500">Select filters and click Search to scrape listings</p>
+          <p className="text-xs text-gray-400 mt-1">Sources include BizBuySell, BizQuest, DealStream, and proprietary off-market outreach</p>
+        </div>
       </div>
     );
   }
