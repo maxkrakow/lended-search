@@ -57,7 +57,7 @@ const FUNNEL_STEPS = [
   { id: 'program', label: 'Program' },
 ];
 
-// --- Demo Data ---
+// --- Demo Data Generation ---
 
 const ON_MARKET_STEPS = [
   { key: 'scraped', label: 'Listing Scraped' },
@@ -76,246 +76,296 @@ const OFF_MARKET_STEPS = [
   { key: 'loi_submitted', label: 'LOI Submitted' },
 ];
 
-const DEMO_OFF_MARKET = [
-  {
-    id: 'off1',
-    name: 'Precision Metal Fabrication Co.',
-    industry: 'Manufacturing',
-    revenue: '$4.2M',
-    sde: '$1.1M',
-    location: 'Columbus, OH',
-    askingPrice: '$3.8M',
-    ownerAge: '67',
-    status: 'meeting_booked',
-    searcher: 'Jake P.',
-    timeline: [
-      { step: 'identified', date: 'Mar 3', note: 'Found via SOS database — owner registered 1987' },
-      { step: 'called', date: 'Mar 4', note: 'Cold call, spoke with receptionist, owner callback scheduled' },
-      { step: 'conversation_had', date: 'Mar 5', note: 'Owner interested in retiring within 12 months, no broker yet' },
-      { step: 'meeting_booked', date: 'Mar 7', note: 'In-person meeting set for Mar 14 at facility' },
-    ],
-  },
-  {
-    id: 'off2',
-    name: 'Greenfield Landscaping & Irrigation',
-    industry: 'Home Services',
-    revenue: '$2.8M',
-    sde: '$720K',
-    location: 'Austin, TX',
-    askingPrice: 'Not listed — exploring',
-    ownerAge: '59',
-    status: 'conversation_had',
-    searcher: 'Sarah M.',
-    timeline: [
-      { step: 'identified', date: 'Mar 6', note: 'Email campaign — owner responded to direct mail' },
-      { step: 'called', date: 'Mar 7', note: 'Follow-up call, owner open to discussion' },
-      { step: 'conversation_had', date: 'Mar 10', note: 'Owner exploring options, wants to stay on 6 months post-close' },
-    ],
-  },
-  {
-    id: 'off3',
-    name: 'Summit HVAC Services',
-    industry: 'HVAC',
-    revenue: '$5.1M',
-    sde: '$1.4M',
-    location: 'Denver, CO',
-    askingPrice: '$4.5M',
-    ownerAge: '62',
-    status: 'loi_submitted',
-    searcher: 'Jake P.',
-    timeline: [
-      { step: 'identified', date: 'Feb 15', note: 'Targeted outreach — 30+ year owner, no succession plan' },
-      { step: 'called', date: 'Feb 16', note: 'Connected directly, very motivated seller' },
-      { step: 'conversation_had', date: 'Feb 18', note: 'Detailed financials shared, clean books' },
-      { step: 'meeting_booked', date: 'Feb 21', note: 'On-site tour and meeting with owner + bookkeeper' },
-      { step: 'loi_submitted', date: 'Mar 5', note: 'LOI submitted at $4.5M, 60-day diligence period' },
-    ],
-  },
-  {
-    id: 'off4',
-    name: 'Reliable Plumbing Group',
-    industry: 'Plumbing',
-    revenue: '$3.5M',
-    sde: '$900K',
-    location: 'Phoenix, AZ',
-    askingPrice: 'TBD',
-    ownerAge: '71',
-    status: 'called',
-    searcher: 'Sarah M.',
-    timeline: [
-      { step: 'identified', date: 'Mar 12', note: 'Owner flagged via aging owner filter, in business 40+ years' },
-      { step: 'called', date: 'Mar 13', note: 'Left voicemail, follow-up call scheduled for Mar 15' },
-    ],
-  },
-  {
-    id: 'off5',
-    name: 'Cascade Environmental Services',
-    industry: 'Environmental Services',
-    revenue: '$6.2M',
-    sde: '$1.6M',
-    location: 'Portland, OR',
-    askingPrice: '$5.8M',
-    ownerAge: '64',
-    status: 'meeting_booked',
-    searcher: 'Jake P.',
-    timeline: [
-      { step: 'identified', date: 'Feb 28', note: 'Referral from industry contact' },
-      { step: 'called', date: 'Mar 1', note: 'Initial call, owner receptive' },
-      { step: 'conversation_had', date: 'Mar 3', note: 'Owner wants full exit, recurring municipal contracts in place' },
-      { step: 'meeting_booked', date: 'Mar 8', note: 'Meeting scheduled Mar 18 with owner and his attorney' },
-    ],
-  },
+const US_STATES = [
+  'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','Florida','Georgia',
+  'Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Maryland',
+  'Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey',
+  'New Mexico','New York','North Carolina','North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina',
+  'South Dakota','Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia','Wisconsin','Wyoming',
 ];
 
-const DEMO_ON_MARKET = [
-  {
-    id: 'on1',
-    name: 'Pacific Coast Commercial Cleaning',
-    industry: 'Janitorial / Commercial Cleaning',
-    revenue: '$1.9M',
-    sde: '$480K',
-    location: 'San Diego, CA',
-    askingPrice: '$1.6M',
-    source: 'BizBuySell',
-    listedDate: 'Mar 8',
-    status: 'meeting_booked',
-    searcher: 'Jake P.',
-    timeToContact: '7 min after listing',
-    timeline: [
-      { step: 'scraped', date: 'Mar 8, 9:02 AM', note: 'Listing detected on BizBuySell — matched criteria' },
-      { step: 'texted', date: 'Mar 8, 9:09 AM', note: 'Text sent to broker, 7 min after post' },
-      { step: 'no_response', date: 'Mar 8, 9:19 AM', note: 'No response after 10 min' },
-      { step: 'called', date: 'Mar 8, 9:20 AM', note: 'Called broker directly, got through' },
-      { step: 'meeting_booked', date: 'Mar 8, 9:35 AM', note: 'Meeting booked for Mar 11 — broker said we were first caller' },
-    ],
-  },
-  {
-    id: 'on2',
-    name: 'Northeast Auto Body & Repair',
-    industry: 'Automotive Services',
-    revenue: '$3.1M',
-    sde: '$750K',
-    location: 'Hartford, CT',
-    askingPrice: '$2.4M',
-    source: 'BizBuySell',
-    listedDate: 'Mar 5',
-    status: 'loi_submitted',
-    searcher: 'Sarah M.',
-    timeToContact: '4 min after listing',
-    timeline: [
-      { step: 'scraped', date: 'Mar 5, 11:15 AM', note: 'Listing detected on BizBuySell' },
-      { step: 'texted', date: 'Mar 5, 11:19 AM', note: 'Text sent to broker, 4 min after post' },
-      { step: 'called', date: 'Mar 5, 11:22 AM', note: 'Called broker, confirmed details, strong match' },
-      { step: 'meeting_booked', date: 'Mar 6', note: 'Zoom meeting scheduled, financials shared' },
-      { step: 'loi_submitted', date: 'Mar 14', note: 'LOI submitted at $2.4M asking price' },
-    ],
-  },
-  {
-    id: 'on3',
-    name: 'Sunshine Pool & Spa Maintenance',
-    industry: 'Pool Services',
-    revenue: '$1.2M',
-    sde: '$350K',
-    location: 'Tampa, FL',
-    askingPrice: '$950K',
-    source: 'BizBuySell',
-    listedDate: 'Mar 11',
-    status: 'called',
-    searcher: 'Jake P.',
-    timeToContact: '12 min after listing',
-    timeline: [
-      { step: 'scraped', date: 'Mar 11, 2:30 PM', note: 'Listing detected on BizBuySell' },
-      { step: 'texted', date: 'Mar 11, 2:42 PM', note: 'Text sent to broker' },
-      { step: 'no_response', date: 'Mar 11, 2:52 PM', note: 'No response after 10 min' },
-      { step: 'called', date: 'Mar 11, 2:53 PM', note: 'Called broker, left voicemail — callback pending' },
-    ],
-  },
-  {
-    id: 'on4',
-    name: 'Apex Electrical Contractors',
-    industry: 'Electrical Services',
-    revenue: '$2.6M',
-    sde: '$620K',
-    location: 'Charlotte, NC',
-    askingPrice: '$1.9M',
-    source: 'BizBuySell',
-    listedDate: 'Mar 10',
-    status: 'meeting_booked',
-    searcher: 'Sarah M.',
-    timeToContact: '5 min after listing',
-    timeline: [
-      { step: 'scraped', date: 'Mar 10, 8:45 AM', note: 'Listing detected on BizBuySell — strong match for criteria' },
-      { step: 'texted', date: 'Mar 10, 8:50 AM', note: 'Text sent to broker, 5 min after post' },
-      { step: 'called', date: 'Mar 10, 8:55 AM', note: 'Called broker, connected immediately' },
-      { step: 'meeting_booked', date: 'Mar 10, 9:10 AM', note: 'In-person meeting booked for Mar 13' },
-    ],
-  },
-  {
-    id: 'on5',
-    name: 'Tri-State Pest Control',
-    industry: 'Pest Control',
-    revenue: '$1.5M',
-    sde: '$410K',
-    location: 'Philadelphia, PA',
-    askingPrice: '$1.2M',
-    source: 'BizBuySell',
-    listedDate: 'Mar 12',
-    status: 'texted',
-    searcher: 'Jake P.',
-    timeToContact: '3 min after listing',
-    timeline: [
-      { step: 'scraped', date: 'Mar 12, 10:22 AM', note: 'Listing detected on BizBuySell' },
-      { step: 'texted', date: 'Mar 12, 10:25 AM', note: 'Text sent to broker, 3 min after post — awaiting response' },
-    ],
-  },
-  {
-    id: 'on6',
-    name: 'Mountain View Roofing Co.',
-    industry: 'Roofing',
-    revenue: '$3.8M',
-    sde: '$880K',
-    location: 'Salt Lake City, UT',
-    askingPrice: '$2.9M',
-    source: 'BizBuySell',
-    listedDate: 'Mar 7',
-    status: 'meeting_booked',
-    searcher: 'Sarah M.',
-    timeToContact: '9 min after listing',
-    timeline: [
-      { step: 'scraped', date: 'Mar 7, 3:15 PM', note: 'Listing detected on BizBuySell' },
-      { step: 'texted', date: 'Mar 7, 3:24 PM', note: 'Text sent to broker, 9 min after post' },
-      { step: 'no_response', date: 'Mar 7, 3:34 PM', note: 'No response after 10 min' },
-      { step: 'called', date: 'Mar 7, 3:35 PM', note: 'Called broker, got through, very motivated seller' },
-      { step: 'meeting_booked', date: 'Mar 9', note: 'Meeting booked — broker sending CIM ahead of time' },
-    ],
-  },
-  {
-    id: 'on7',
-    name: 'Coastal Lawn & Garden Services',
-    industry: 'Lawn Care',
-    revenue: '$2.1M',
-    sde: '$540K',
-    location: 'Jacksonville, FL',
-    askingPrice: '$1.7M',
-    source: 'BizBuySell',
-    listedDate: 'Mar 13',
-    status: 'called',
-    searcher: 'Jake P.',
-    timeToContact: '6 min after listing',
-    timeline: [
-      { step: 'scraped', date: 'Mar 13, 11:08 AM', note: 'Listing detected on BizBuySell — recurring revenue model' },
-      { step: 'texted', date: 'Mar 13, 11:14 AM', note: 'Text sent to broker, 6 min after post' },
-      { step: 'no_response', date: 'Mar 13, 11:24 AM', note: 'No response after 10 min' },
-      { step: 'called', date: 'Mar 13, 11:25 AM', note: 'Called broker, scheduled callback for tomorrow' },
-    ],
-  },
+const STATE_ABBREVS = {
+  'Alabama':'AL','Alaska':'AK','Arizona':'AZ','Arkansas':'AR','California':'CA','Colorado':'CO','Connecticut':'CT','Delaware':'DE','Florida':'FL','Georgia':'GA',
+  'Hawaii':'HI','Idaho':'ID','Illinois':'IL','Indiana':'IN','Iowa':'IA','Kansas':'KS','Kentucky':'KY','Louisiana':'LA','Maine':'ME','Maryland':'MD',
+  'Massachusetts':'MA','Michigan':'MI','Minnesota':'MN','Mississippi':'MS','Missouri':'MO','Montana':'MT','Nebraska':'NE','Nevada':'NV','New Hampshire':'NH','New Jersey':'NJ',
+  'New Mexico':'NM','New York':'NY','North Carolina':'NC','North Dakota':'ND','Ohio':'OH','Oklahoma':'OK','Oregon':'OR','Pennsylvania':'PA','Rhode Island':'RI','South Carolina':'SC',
+  'South Dakota':'SD','Tennessee':'TN','Texas':'TX','Utah':'UT','Vermont':'VT','Virginia':'VA','Washington':'WA','West Virginia':'WV','Wisconsin':'WI','Wyoming':'WY',
+};
+
+const STATE_CITIES = {
+  'AL':['Birmingham','Huntsville','Mobile'],'AK':['Anchorage','Fairbanks','Juneau'],'AZ':['Phoenix','Tucson','Scottsdale'],'AR':['Little Rock','Fayetteville','Fort Smith'],
+  'CA':['San Diego','Sacramento','Fresno','San Jose','Los Angeles'],'CO':['Denver','Colorado Springs','Boulder'],'CT':['Hartford','New Haven','Stamford'],'DE':['Wilmington','Dover','Newark'],
+  'FL':['Tampa','Jacksonville','Orlando','Miami','Fort Lauderdale'],'GA':['Atlanta','Savannah','Augusta'],'HI':['Honolulu','Maui','Kailua'],'ID':['Boise','Meridian','Nampa'],
+  'IL':['Chicago','Springfield','Naperville'],'IN':['Indianapolis','Fort Wayne','Carmel'],'IA':['Des Moines','Cedar Rapids','Davenport'],'KS':['Wichita','Overland Park','Kansas City'],
+  'KY':['Louisville','Lexington','Bowling Green'],'LA':['New Orleans','Baton Rouge','Shreveport'],'ME':['Portland','Bangor','Lewiston'],'MD':['Baltimore','Bethesda','Annapolis'],
+  'MA':['Boston','Worcester','Cambridge'],'MI':['Detroit','Grand Rapids','Ann Arbor'],'MN':['Minneapolis','St. Paul','Rochester'],'MS':['Jackson','Gulfport','Hattiesburg'],
+  'MO':['Kansas City','St. Louis','Springfield'],'MT':['Billings','Missoula','Great Falls'],'NE':['Omaha','Lincoln','Bellevue'],'NV':['Las Vegas','Reno','Henderson'],
+  'NH':['Manchester','Nashua','Concord'],'NJ':['Newark','Jersey City','Princeton'],'NM':['Albuquerque','Santa Fe','Las Cruces'],'NY':['New York','Buffalo','Albany','Rochester'],
+  'NC':['Charlotte','Raleigh','Durham'],'ND':['Fargo','Bismarck','Grand Forks'],'OH':['Columbus','Cleveland','Cincinnati'],'OK':['Oklahoma City','Tulsa','Norman'],
+  'OR':['Portland','Eugene','Salem'],'PA':['Philadelphia','Pittsburgh','Allentown'],'RI':['Providence','Warwick','Cranston'],'SC':['Charleston','Columbia','Greenville'],
+  'SD':['Sioux Falls','Rapid City','Aberdeen'],'TN':['Nashville','Memphis','Knoxville'],'TX':['Austin','Dallas','Houston','San Antonio','Fort Worth'],
+  'UT':['Salt Lake City','Provo','Ogden'],'VT':['Burlington','Montpelier','Rutland'],'VA':['Richmond','Virginia Beach','Arlington'],'WA':['Seattle','Tacoma','Spokane'],
+  'WV':['Charleston','Huntington','Morgantown'],'WI':['Milwaukee','Madison','Green Bay'],'WY':['Cheyenne','Casper','Laramie'],
+};
+
+const INDUSTRIES = [
+  'HVAC','Plumbing','Electrical','Roofing','Landscaping','Pest Control','Pool Services','Painting','Flooring',
+  'General Contracting','Garage Doors','Fencing','Tree Service','Pressure Washing','Insulation','Window Cleaning',
+  'Janitorial / Commercial Cleaning','Carpet Cleaning','Fire Protection','Septic Services',
+  'Auto Body & Collision','Auto Repair & Maintenance','Tire & Wheel','Car Wash','Towing','Transmission Repair',
+  'Manufacturing','Metal Fabrication','CNC Machining','Plastic Molding','Food Manufacturing','Packaging',
+  'Trucking & Freight','Moving & Storage','Courier Services','Waste Management','Recycling',
+  'Dental Practice','Veterinary Clinic','Physical Therapy','Home Health Care','Pharmacy','Medical Equipment',
+  'IT Services','Managed IT','Cybersecurity','Software Development',
+  'Accounting & Bookkeeping','Staffing & Recruiting','Insurance Agency','Digital Marketing Agency',
+  'Daycare & Childcare','Tutoring & Education','Fitness & Gym','Salon & Spa','Dry Cleaning & Laundry',
+  'Restaurant & Food Service','Catering','Bakery','Coffee Shop',
+  'Property Management','Self Storage','Commercial Real Estate Services',
+  'Printing & Signage','Industrial Supply','Safety & Compliance Services',
+  'Environmental Services','Water Treatment','Demolition','Concrete & Masonry',
+  'Security Services','Alarm & Surveillance','Locksmith',
+  'Welding','Machine Shop','HVAC Distribution','Plumbing Supply',
+  'Agriculture & Farming','Nursery & Garden Center','Pet Services',
 ];
+
+const INDUSTRY_NAMES = {
+  'HVAC': ['Summit HVAC','Comfort Air Solutions','Arctic Breeze Heating & Cooling','ProTemp Climate','AllSeason HVAC','Reliable Air Systems','TrueComfort Mechanical','Peak Performance HVAC','CoolWave Air','Heritage Heating & Air'],
+  'Plumbing': ['Reliable Plumbing','FlowRight Plumbing','ClearDrain Plumbing Co.','AquaPipe Solutions','TruFlow Plumbing','Precision Pipe & Drain','AllClear Plumbing','BlueLine Plumbing','PipeMaster Services','WaterWorks Plumbing'],
+  'Electrical': ['Apex Electrical','BrightWire Electric','PowerUp Electrical','CurrentFlow Electric','VoltEdge Electrical','SafeCircuit Electric','ProWire Electrical','SparkPoint Electric','TrueLine Electrical','AmperAge Electric'],
+  'Roofing': ['Mountain View Roofing','SkyShield Roofing','TopGuard Roofing Co.','Pinnacle Roofing','StormProof Roofing','Heritage Roofing','TrueTop Roofing','RidgeLine Roofing','AllWeather Roofing','Ironclad Roofing'],
+  'Landscaping': ['Greenfield Landscaping','ProScape Landscaping','EverGreen Grounds','TerraForm Landscaping','NatureCraft Landscape','Prestige Lawn & Garden','GreenEdge Landscaping','BlueRidge Landscaping','SunValley Grounds','Horizon Landscaping'],
+  'Pest Control': ['Tri-State Pest Control','GuardLine Pest Solutions','ShieldPest Services','BugFree Pest Control','SafeHome Pest Solutions','TruGuard Pest Control','ClearZone Pest','PestShield Pro','DefendAll Pest','NoPest Solutions'],
+  'Pool Services': ['Sunshine Pool & Spa','CrystalClear Pool Care','AquaBlue Pool Services','ProPool Maintenance','BlueWave Pool Co.','SparklePool Services','PrimePool Care','ClearWater Pools','AquaPro Pool Services','TrueBlue Pool'],
+  'Painting': ['ProCoat Painting','FreshFinish Painting','TrueColor Painters','PrimeLine Painting','BrightCoat Painting Co.','Heritage Painting','AllPro Painting','PrecisionCoat Painters','ColorCraft Painting','MasterStroke Painting'],
+  'Flooring': ['ProFloor Installations','TrueStep Flooring','PrimeFloor Co.','AllSurface Flooring','PrecisionFloor Services','Heritage Flooring','CraftFloor Installations','Foundation Flooring','SolidStep Flooring','TopFloor Contractors'],
+  'General Contracting': ['Cornerstone Builders','TrueForm Construction','AllBuild Contractors','PrimeBuild Co.','Heritage Construction','ProBuild Contractors','Keystone General Contracting','SolidRock Builders','Benchmark Construction','TrustBuild Contractors'],
+  'Garage Doors': ['ProLift Garage Doors','AllAccess Door Co.','TrueOpen Garage Doors','PrecisionDoor Services','LiftMaster Garage Co.','GateCraft Doors','SwiftLift Garage','OpenWay Door Services','DoorPro Solutions','ReliaDoor Co.'],
+  'Fencing': ['IronGuard Fencing','ProFence Solutions','TrueLine Fencing','BorderCraft Fencing','AllSecure Fence Co.','Heritage Fencing','PrimeFence Contractors','SteelEdge Fencing','GuardLine Fence','FenceWorks Pro'],
+  'Tree Service': ['ArborCare Tree Service','TopCut Tree Specialists','TrueTimber Tree','Canopy Tree Services','AllGreen Tree Care','SkyReach Tree Service','ProArb Tree Co.','WoodCraft Tree Service','Heritage Tree Care','DeepRoot Tree Service'],
+  'Pressure Washing': ['PowerClean Pressure Washing','SprayPro Services','TrueClean Power Wash','PrimeWash Co.','AllClean Pressure Services','BlastClean Pro','ClearCoat Washing','JetWash Solutions','PureForce Washing','SurfaceClean Pro'],
+  'Insulation': ['ProBarrier Insulation','TrueTemp Insulation','AllSeal Insulation Co.','HeatShield Insulation','PrimeInsulate Services','ComfortSeal Insulation','ThermoGuard Insulation','EcoBarrier Insulation','CoreTemp Insulation','SafeSeal Insulation'],
+  'Window Cleaning': ['CrystalClear Window Cleaning','SparkleView Windows','TrueShine Window Co.','ProPane Window Services','ClearSight Window Cleaning','BrightView Windows','AllClear Window Co.','ShineRight Windows','PureView Cleaning','GlassPro Window'],
+  'Janitorial / Commercial Cleaning': ['Pacific Coast Cleaning','ProShine Janitorial','TrueClean Commercial','AllBright Cleaning Co.','PrimeClean Services','SpotlessPro Janitorial','ClearSpace Cleaning','Heritage Cleaning Services','FreshStart Janitorial','MasterClean Commercial'],
+  'Carpet Cleaning': ['DeepClean Carpet Care','ProFiber Carpet Cleaning','TrueClean Carpet Co.','FreshFiber Services','AllClean Carpet Care','PrimeCarpet Cleaners','SpotFree Carpet','PureSoft Carpet Cleaning','CarpetPro Solutions','SteamRight Carpet'],
+  'Fire Protection': ['FireShield Services','AllSafe Fire Protection','TrueGuard Fire Systems','ProFire Solutions','SafePoint Fire Protection','FireWatch Pro','BlazeSafe Systems','RedLine Fire Protection','FirstAlert Fire Co.','ShieldFire Services'],
+  'Septic Services': ['ClearFlow Septic','ProDrain Septic Services','TruePump Septic Co.','AllClear Septic Solutions','PrimeSeptic Services','DrainRight Septic','FlowMaster Septic','ReliaSeptic Co.','DeepDrain Septic','SafeFlow Septic'],
+  'Auto Body & Collision': ['Northeast Auto Body','ProFinish Collision','TrueForm Auto Body','PrecisionBody Works','AllRestore Auto Body','Heritage Auto Body','PrimeDent Collision','CraftAuto Body Shop','MasterBody Works','AutoEdge Collision'],
+  'Auto Repair & Maintenance': ['TrueWrench Auto Repair','ProMech Auto Services','AllTune Auto Repair','Precision Auto Care','ReliAuto Mechanics','Heritage Auto Repair','PrimeTech Auto','MasterMech Services','FastLane Auto Repair','TrustAuto Maintenance'],
+  'Tire & Wheel': ['ProTire & Wheel','AllGrip Tire Co.','TrueRoll Tire Services','PrimeTread Tire','TireMax Pro','WheelWorks Tire','FastTrack Tire Co.','GripRight Tires','SteadyRoll Tire','TireEdge Services'],
+  'Car Wash': ['SparkleWash Auto Spa','ProShine Car Wash','TrueGloss Car Wash','CrystalClean Auto','AllShine Car Wash','PrimeWash Auto Spa','SplashZone Car Wash','GleamPro Car Wash','AquaShine Car Wash','ShineMaster Auto'],
+  'Towing': ['QuickHook Towing','ProTow Services','TrueHaul Towing','AllRescue Towing','PrimeTow Co.','ReliaTow Services','RapidHook Towing','SafeTow Pro','LiftLine Towing','HeavyDuty Towing'],
+  'Transmission Repair': ['ProShift Transmission','TrueGear Transmission','AllDrive Transmission','PrecisionShift Auto','PrimeTrans Services','GearMaster Transmission','ShiftRight Auto','TransPro Repair','CoreDrive Transmission','ReliaTrans Co.'],
+  'Manufacturing': ['Precision Metal Fabrication','ProBuild Manufacturing','TrueCraft Industries','AllMake Manufacturing','PrimeParts Manufacturing','Heritage Manufacturing','CoreTech Manufacturing','SolidForm Industries','MasterCraft Mfg','BenchMark Manufacturing'],
+  'Metal Fabrication': ['IronEdge Fabrication','ProWeld Metal Works','TrueSteel Fabrication','AllMetal Fabricators','PrimeCut Metal','ForgeWorks Fabrication','SteelCraft Fabrication','MetalPro Solutions','CoreSteel Fabrication','HeavyMetal Works'],
+  'CNC Machining': ['PrecisionCNC Works','ProMill CNC','TrueCut Machining','AllAxis CNC','PrimeMachine Co.','CoreCut CNC','MasterMill Machining','ToolEdge CNC','SpindlePro CNC','AccuCut Machining'],
+  'Plastic Molding': ['ProMold Plastics','TrueForm Molding','AllCast Plastics','PrimeMold Co.','CorePlast Molding','MasterMold Industries','FormRight Plastics','MoldPro Solutions','ShapeCraft Plastics','PrecisionMold Co.'],
+  'Food Manufacturing': ['FreshSource Foods','ProHarvest Manufacturing','TrueTaste Foods','AllNatural Food Co.','PrimeChoice Foods','Heritage Food Manufacturing','CoreFresh Foods','FlavorCraft Manufacturing','PureBatch Foods','GoldenHarvest Mfg'],
+  'Packaging': ['ProPack Solutions','TrueWrap Packaging','AllBox Packaging Co.','PrimePack Industries','CorePack Solutions','SmartPack Co.','WrapRight Packaging','BoxCraft Packaging','SealPro Packaging','SwiftPack Industries'],
+  'Trucking & Freight': ['CrossCountry Freight','ProHaul Trucking','TrueRoute Logistics','AllMiles Trucking','PrimeFreight Co.','Highway Trucking Services','CoreHaul Freight','SwiftLine Trucking','ReliRoute Freight','HeavyHaul Trucking'],
+  'Moving & Storage': ['ProMove Services','TruePack Moving','AllSet Moving & Storage','PrimeMove Co.','SwiftShift Moving','ReliMove Services','CorePack Moving','SafeStore Moving','BoxRight Moving','MasterMove Co.'],
+  'Courier Services': ['QuickDrop Courier','ProDeliver Services','TrueRoute Courier','AllSpeed Courier','PrimeRun Delivery','SwiftDrop Courier','CoreDeliver Co.','RapidRoute Courier','FastTrack Delivery','ReliDeliver Services'],
+  'Waste Management': ['CleanStream Waste','ProDispose Services','TrueGreen Waste Mgmt','AllClear Waste Solutions','PrimeWaste Co.','CoreClean Waste','EcoDispose Services','GreenRoute Waste','SafeStream Waste','ReliWaste Solutions'],
+  'Recycling': ['GreenCycle Recycling','ProReclaim Services','TrueLoop Recycling','AllGreen Recycling','PrimeCycle Co.','CoreRecycle Solutions','EcoLoop Recycling','ReClaimPro Services','PureStream Recycling','RenewCycle Co.'],
+  'Dental Practice': ['BrightSmile Dental','ProCare Dental Group','TrueSmile Dentistry','AllCare Dental','PrimeDental Practice','Heritage Dental','CoreSmile Dental','FreshStart Dental','SmileCraft Dentistry','PrecisionDental Group'],
+  'Veterinary Clinic': ['PawsCare Veterinary','ProPet Vet Clinic','TruePaws Veterinary','AllPets Vet Care','PrimeVet Clinic','Heritage Veterinary','CorePet Vet Services','FurFirst Vet Clinic','AnimalCare Veterinary','PawsPro Vet'],
+  'Physical Therapy': ['ProMotion Physical Therapy','TrueForm PT','AllMove Physical Therapy','PrimeFlex PT','CoreStrength PT','ActiveCare Physical Therapy','FlexPoint PT','MotionPro Physical Therapy','PeakForm PT','VitalMove Physical Therapy'],
+  'Home Health Care': ['CareFirst Home Health','ProCare Home Services','TrueCare Home Health','AllHeart Home Care','PrimeCare Home Health','Heritage Home Care','CoreCare Home Services','ComfortFirst Home Health','SafeHands Home Care','ReliCare Home Health'],
+  'Pharmacy': ['TrueCare Pharmacy','ProScript Pharmacy','AllHealth Pharmacy','PrimeFill Pharmacy','CoreCare Pharmacy','Heritage Pharmacy','FreshScript Pharmacy','MediPro Pharmacy','SafeFill Pharmacy','WellPoint Pharmacy'],
+  'Medical Equipment': ['ProMed Equipment','TrueHealth Supplies','AllMed Equipment Co.','PrimeMed Supplies','CoreHealth Equipment','MedEdge Supplies','SafeMed Equipment','ReliMed Co.','HealthCraft Equipment','MedPro Supply'],
+  'IT Services': ['ProByte IT Services','TrueTech IT Solutions','AllNet IT Services','PrimeTech IT','CoreByte IT','ByteEdge IT Services','TechCraft Solutions','NetPro IT Services','SecureNet IT','ReliTech IT Solutions'],
+  'Managed IT': ['ShieldNet Managed IT','ProManage IT','TrueNet Managed Services','AllSecure Managed IT','PrimeNet IT Management','CoreManage IT','NetGuard Managed IT','TechShield Managed Services','ByteGuard IT','SecureManage IT'],
+  'Cybersecurity': ['CyberShield Security','ProGuard Cyber','TrueSafe Cybersecurity','AllSecure Cyber','PrimeCyber Solutions','CoreSafe Cybersecurity','NetDefend Security','CyberEdge Solutions','ShieldByte Cyber','SafeNet Cybersecurity'],
+  'Software Development': ['CodeCraft Software','ProDev Solutions','TrueCode Software','AllStack Development','PrimeDev Co.','CoreCode Software','ByteCraft Development','DevEdge Solutions','CodePro Software','StackBuild Development'],
+  'Accounting & Bookkeeping': ['TrueBooks Accounting','ProLedger Services','AllCount Bookkeeping','PrimeBooks Accounting','CoreCount Financial','LedgerCraft Accounting','NumbersPro Bookkeeping','AccuBooks Services','SafeLedger Accounting','ReliCount Financial'],
+  'Staffing & Recruiting': ['TalentBridge Staffing','ProHire Recruiting','TrueMatch Staffing','AllTalent Recruiting','PrimeHire Staffing','CoreTalent Recruiting','HireCraft Staffing','StaffEdge Recruiting','SwiftHire Staffing','ReliStaff Recruiting'],
+  'Insurance Agency': ['TrueShield Insurance','ProCover Agency','AllGuard Insurance','PrimeSafe Insurance','CoreCover Agency','ShieldCraft Insurance','SafeHaven Insurance','InsurePro Agency','GuardPoint Insurance','ReliCover Insurance'],
+  'Digital Marketing Agency': ['BrightPixel Marketing','ProReach Digital','TrueClick Marketing','AllGrowth Digital','PrimeReach Agency','CoreClick Marketing','PixelCraft Digital','GrowthEdge Marketing','ClickPro Agency','ReliReach Digital'],
+  'Daycare & Childcare': ['Sunshine Daycare','ProKids Childcare','TrueCare Kids','AllStars Daycare','PrimeKids Childcare','Heritage Daycare','BrightStart Childcare','LittleSteps Daycare','HappyHeart Childcare','SafeNest Daycare'],
+  'Tutoring & Education': ['BrightMinds Tutoring','ProLearn Education','TrueSkill Tutoring','AllGrades Education','PrimeLearn Tutoring','CoreSkill Education','LearnCraft Tutoring','MindEdge Education','SkillPro Tutoring','BrightPath Education'],
+  'Fitness & Gym': ['PeakFit Gym','ProStrength Fitness','TrueGrit Fitness','AllFlex Gym','PrimeFit Fitness','CorePower Gym','FitCraft Fitness','IronEdge Gym','FlexPro Fitness','StrongPoint Gym'],
+  'Salon & Spa': ['Radiance Salon & Spa','ProGlow Salon','TrueBeauty Spa','AllGlam Salon','PrimeGlow Salon & Spa','Heritage Salon','GlowCraft Spa','BlissPoint Salon','LuxeEdge Salon & Spa','SereneSpa'],
+  'Dry Cleaning & Laundry': ['FreshPress Dry Cleaning','ProClean Laundry','TruePress Cleaners','AllFresh Dry Cleaning','PrimePress Laundry','SpotlessPro Cleaners','CrispClean Laundry','CleanCraft Dry Cleaning','FreshFold Laundry','QuickPress Cleaners'],
+  'Restaurant & Food Service': ['Golden Fork Restaurant','ProTaste Food Service','TrueFlavor Kitchen','AllSpice Restaurant','PrimePlate Food Service','Heritage Kitchen','FlavorCraft Restaurant','TasteEdge Food Service','FreshPlate Kitchen','CulinaryPro Restaurant'],
+  'Catering': ['EliteTable Catering','ProFeast Catering','TrueTaste Catering','AllOccasion Catering','PrimeFeast Co.','Heritage Catering','FlavorCraft Catering','EventEdge Catering','FreshFeast Catering','CulinaryPro Catering'],
+  'Bakery': ['Golden Crust Bakery','ProBake Co.','TrueCrust Bakery','AllRise Bakery','PrimeBake Co.','Heritage Bakery','CrustCraft Bakery','FreshRise Bakery','OvenEdge Bakery','BakePro Co.'],
+  'Coffee Shop': ['Bean & Brew Coffee','ProRoast Coffee','TrueBrew Coffee Co.','AllBean Coffee','PrimeBrew Coffee','Heritage Coffee Co.','BrewCraft Coffee','CupEdge Coffee','FreshBean Coffee','RoastPro Coffee'],
+  'Property Management': ['KeyStone Property Mgmt','ProManage Properties','TrueHome Property Mgmt','AllPoint Property','PrimeProperty Management','CoreHome Properties','ManageCraft Property','HomeEdge Property Mgmt','SafeHome Properties','ReliProperty Management'],
+  'Self Storage': ['SecureBox Storage','ProStore Self Storage','TrueKeep Storage','AllSafe Storage','PrimeBox Self Storage','CoreKeep Storage','StoreCraft Storage','LockEdge Self Storage','SafeStore Storage','ReliBox Storage'],
+  'Commercial Real Estate Services': ['PrimeLot Commercial','ProSpace Realty','TrueCommercial Realty','AllPoint Commercial','CoreSpace Commercial','LotCraft Realty','SpaceEdge Commercial','KeyCommercial Realty','SafeLot Commercial','ReliSpace Realty'],
+  'Printing & Signage': ['ProPrint & Sign','TrueMark Printing','AllSign Graphics','PrimePrint Co.','CoreMark Signage','PrintCraft Co.','SignEdge Graphics','BrightMark Printing','InkPro Signage','ReliPrint Co.'],
+  'Industrial Supply': ['ProSupply Industrial','TrueStock Industrial','AllParts Supply','PrimeSource Industrial','CoreSupply Co.','StockCraft Industrial','SupplyEdge Industrial','SafeStock Supply','ReliParts Industrial','BulkPro Supply'],
+  'Safety & Compliance Services': ['SafeFirst Compliance','ProSafe Services','TrueCompliance Co.','AllSafe Compliance','PrimeSafe Services','CoreCompliance Co.','SafeCraft Services','CompliEdge Solutions','GuardPro Compliance','ReliSafe Services'],
+  'Environmental Services': ['Cascade Environmental','ProGreen Environmental','TrueEco Services','AllClean Environmental','PrimeEco Services','CoreGreen Environmental','EcoCraft Services','GreenEdge Environmental','SafeEco Services','ReliGreen Environmental'],
+  'Water Treatment': ['PureFlow Water Treatment','ProWater Solutions','TrueFlow Water','AllClear Water Treatment','PrimeWater Co.','CoreFlow Water','WaterCraft Treatment','FlowEdge Water','SafeWater Solutions','ReliFlow Water Treatment'],
+  'Demolition': ['ProDemo Services','TrueWreck Demolition','AllClear Demo','PrimeDemo Co.','CoreDemo Services','DemoCraft Co.','WreckEdge Demolition','BlastPro Demo','SafeDemo Services','ReliDemo Co.'],
+  'Concrete & Masonry': ['SolidForm Concrete','ProMason Services','TrueStone Masonry','AllCrete Concrete','PrimeMason Co.','CoreStone Masonry','MasonCraft Co.','StoneEdge Concrete','SafeCrete Services','ReliMason Concrete'],
+  'Security Services': ['ShieldForce Security','ProGuard Services','TrueSafe Security','AllWatch Security','PrimeSafe Security','CoreGuard Services','GuardCraft Security','WatchEdge Security','SafeForce Security','ReliGuard Services'],
+  'Alarm & Surveillance': ['AlertPro Systems','ProWatch Surveillance','TrueAlert Alarm','AllWatch Alarm Co.','PrimeAlert Systems','CoreWatch Surveillance','AlarmCraft Systems','WatchEdge Alarm','SafeAlert Systems','ReliWatch Surveillance'],
+  'Locksmith': ['KeyMaster Locksmith','ProLock Services','TrueKey Locksmith','AllLock Locksmith','PrimeLock Co.','CoreKey Locksmith','LockCraft Services','KeyEdge Locksmith','SafeLock Services','ReliKey Locksmith'],
+  'Welding': ['IronBond Welding','ProWeld Services','TrueArc Welding','AllWeld Co.','PrimeWeld Services','CoreArc Welding','WeldCraft Co.','ArcEdge Welding','SafeWeld Services','ReliArc Welding'],
+  'Machine Shop': ['PrecisionWorks Machine Shop','ProTool Machine','TrueCut Machine Shop','AllAxis Machine Co.','PrimeTool Machine Shop','CoreCut Machine','MachineCraft Shop','ToolEdge Machine','SafeCut Machine Shop','ReliTool Machine'],
+  'HVAC Distribution': ['AirFlow Supply','ProAir Distribution','TrueTemp Supply','AllAir Distribution','PrimeAir Supply','CoreTemp Distribution','AirCraft Supply','TempEdge Distribution','SafeAir Supply','ReliAir Distribution'],
+  'Plumbing Supply': ['PipeLine Supply','ProPipe Distribution','TrueFlow Supply','AllPipe Supply','PrimePipe Distribution','CoreFlow Supply','PipeCraft Distribution','FlowEdge Supply','SafePipe Supply','ReliPipe Distribution'],
+  'Agriculture & Farming': ['GreenAcre Farms','ProHarvest Agriculture','TrueGrow Farms','AllSeason Agriculture','PrimeField Farms','Heritage Agriculture','GrowCraft Farms','FieldEdge Agriculture','FreshAcre Farms','ReliGrow Agriculture'],
+  'Nursery & Garden Center': ['BloomField Nursery','ProGrow Garden Center','TrueBloom Nursery','AllGreen Garden Center','PrimeBloom Nursery','Heritage Garden Center','GrowCraft Nursery','GardenEdge Nursery','FreshBloom Garden','ReliGrow Nursery'],
+  'Pet Services': ['PawsPro Pet Care','ProPet Services','TruePaws Pet Care','AllPets Services','PrimePaws Pet Care','HappyTails Pet Services','PawsCraft Pet Care','PetEdge Services','SafePaws Pet Care','ReliPet Services'],
+};
+
+const SEARCHERS = ['Jake P.', 'Sarah M.', 'Chris D.', 'Emily R.', 'Michael T.'];
+
+function seededRandom(seed) {
+  let s = seed;
+  return () => { s = (s * 16807 + 0) % 2147483647; return (s - 1) / 2147483646; };
+}
+
+function pickRandom(arr, rng) { return arr[Math.floor(rng() * arr.length)]; }
+
+function generateDemoListings(industry, state) {
+  const seed = (industry + state).split('').reduce((a, c) => a + c.charCodeAt(0), 0) * 7 + 42;
+  const rng = seededRandom(seed);
+
+  const offCount = 3 + Math.floor(rng() * 4); // 3-6
+  const onCount = 5 + Math.floor(rng() * 3); // 5-7
+
+  const abbrev = state ? STATE_ABBREVS[state] : null;
+  const getCityState = () => {
+    if (abbrev && STATE_CITIES[abbrev]) {
+      return `${pickRandom(STATE_CITIES[abbrev], rng)}, ${abbrev}`;
+    }
+    const rndState = pickRandom(Object.keys(STATE_CITIES), rng);
+    return `${pickRandom(STATE_CITIES[rndState], rng)}, ${rndState}`;
+  };
+
+  const getIndustry = () => industry || pickRandom(INDUSTRIES, rng);
+
+  const getName = (ind) => {
+    const names = INDUSTRY_NAMES[ind];
+    if (names) return pickRandom(names, rng);
+    return pickRandom(INDUSTRY_NAMES[pickRandom(Object.keys(INDUSTRY_NAMES), rng)], rng);
+  };
+
+  const revOptions = [1.2,1.5,1.8,2.1,2.4,2.8,3.1,3.5,3.8,4.2,4.8,5.1,5.5,6.2];
+  const getRev = () => pickRandom(revOptions, rng);
+  const getSde = (rev) => `$${Math.round(rev * (0.2 + rng() * 0.15) * 10) / 10}M`;
+  const getPrice = (rev) => `$${Math.round(rev * (0.7 + rng() * 0.4) * 10) / 10}M`;
+  const ownerAges = ['57','59','61','62','64','65','67','68','70','71','73'];
+  const dates = ['Mar 6','Mar 7','Mar 8','Mar 9','Mar 10','Mar 11','Mar 12','Mar 13','Mar 14','Mar 15','Mar 16','Mar 17','Mar 18','Mar 19'];
+  const hours = ['8:15 AM','8:45 AM','9:02 AM','9:30 AM','10:10 AM','10:22 AM','10:45 AM','11:08 AM','11:15 AM','11:30 AM','1:15 PM','2:05 PM','2:30 PM','3:15 PM','3:45 PM'];
+
+  const offMarket = [];
+  const offStatuses = ['called','conversation_had','meeting_booked','loi_submitted','meeting_booked','conversation_had'];
+  const identifyMethods = [
+    'Found via SOS database — owner registered over 25 years ago',
+    'Email campaign — owner responded to direct mail piece',
+    'Targeted outreach — aging owner, no succession plan identified',
+    'Owner flagged via proprietary database, in business 30+ years',
+    'Referral from industry contact',
+    'Cold outreach via LinkedIn — owner profile indicated retirement interest',
+    'Direct mail campaign — response card returned',
+    'Identified through business license records — owner age 60+',
+  ];
+  const callNotes = [
+    'Cold call, spoke with receptionist, owner callback scheduled',
+    'Connected directly, owner receptive to conversation',
+    'Left voicemail, follow-up call scheduled',
+    'Called, spoke with owner briefly — interested but cautious',
+    'Follow-up call, owner open to discussion',
+    'Connected on second attempt, owner motivated to explore options',
+  ];
+  const convNotes = [
+    'Owner interested in retiring within 12 months, no broker yet',
+    'Owner exploring options, wants to stay on 6 months post-close',
+    'Detailed financials shared, clean books, strong recurring revenue',
+    'Owner wants full exit, established customer contracts in place',
+    'Good conversation — owner has no succession plan, open to offers',
+    'Owner motivated, discussing timeline and transition expectations',
+  ];
+  const meetNotes = [
+    'In-person meeting set at facility',
+    'Meeting scheduled with owner and his attorney',
+    'Zoom meeting booked, financials to be shared ahead',
+    'On-site tour and meeting with owner + bookkeeper',
+    'Meeting booked — owner sending P&L and balance sheet',
+  ];
+  const loiNotes = ['LOI submitted, 60-day diligence period','LOI submitted at asking price','LOI submitted, negotiating terms'];
+
+  for (let i = 0; i < offCount; i++) {
+    const ind = getIndustry();
+    const rev = getRev();
+    const status = offStatuses[i % offStatuses.length];
+    const timeline = [{ step: 'identified', date: pickRandom(dates.slice(0, 5), rng), note: pickRandom(identifyMethods, rng) }];
+    timeline.push({ step: 'called', date: pickRandom(dates.slice(2, 7), rng), note: pickRandom(callNotes, rng) });
+    if (['conversation_had','meeting_booked','loi_submitted'].includes(status)) {
+      timeline.push({ step: 'conversation_had', date: pickRandom(dates.slice(4, 9), rng), note: pickRandom(convNotes, rng) });
+    }
+    if (['meeting_booked','loi_submitted'].includes(status)) {
+      timeline.push({ step: 'meeting_booked', date: pickRandom(dates.slice(6, 12), rng), note: pickRandom(meetNotes, rng) });
+    }
+    if (status === 'loi_submitted') {
+      timeline.push({ step: 'loi_submitted', date: pickRandom(dates.slice(8, 14), rng), note: pickRandom(loiNotes, rng) });
+    }
+    offMarket.push({
+      id: `off${i}`,
+      name: getName(ind),
+      industry: ind,
+      revenue: `$${rev}M`,
+      sde: getSde(rev),
+      location: getCityState(),
+      askingPrice: rng() > 0.3 ? getPrice(rev) : 'TBD — exploring',
+      ownerAge: pickRandom(ownerAges, rng),
+      status,
+      searcher: pickRandom(SEARCHERS, rng),
+      timeline,
+    });
+  }
+
+  const onMarket = [];
+  const onStatuses = ['texted','called','meeting_booked','loi_submitted','meeting_booked','called','meeting_booked'];
+  for (let i = 0; i < onCount; i++) {
+    const ind = getIndustry();
+    const rev = getRev();
+    const status = onStatuses[i % onStatuses.length];
+    const contactMin = 3 + Math.floor(rng() * 12);
+    const baseDate = pickRandom(dates, rng);
+    const baseHour = pickRandom(hours, rng);
+    const timeline = [{ step: 'scraped', date: `${baseDate}, ${baseHour}`, note: `Listing detected on BizBuySell — matched ${ind.toLowerCase()} criteria` }];
+    timeline.push({ step: 'texted', date: `${baseDate}, ${baseHour}`, note: `Text sent to broker, ${contactMin} min after post` });
+    if (['no_response','called','meeting_booked','loi_submitted'].includes(status) && rng() > 0.4) {
+      timeline.push({ step: 'no_response', date: `${baseDate}`, note: 'No response after 10 min' });
+    }
+    if (['called','meeting_booked','loi_submitted'].includes(status)) {
+      timeline.push({ step: 'called', date: `${baseDate}`, note: rng() > 0.5 ? 'Called broker directly, got through' : 'Called broker, left voicemail — callback received same day' });
+    }
+    if (['meeting_booked','loi_submitted'].includes(status)) {
+      timeline.push({ step: 'meeting_booked', date: pickRandom(dates.slice(5), rng), note: rng() > 0.5 ? 'Meeting booked — broker said we were first caller' : 'Zoom meeting scheduled, financials shared' });
+    }
+    if (status === 'loi_submitted') {
+      timeline.push({ step: 'loi_submitted', date: pickRandom(dates.slice(8), rng), note: 'LOI submitted at asking price' });
+    }
+    onMarket.push({
+      id: `on${i}`,
+      name: getName(ind),
+      industry: ind,
+      revenue: `$${rev}M`,
+      sde: getSde(rev),
+      location: getCityState(),
+      askingPrice: getPrice(rev),
+      source: 'BizBuySell',
+      listedDate: baseDate,
+      status,
+      searcher: pickRandom(SEARCHERS, rng),
+      timeToContact: `${contactMin} min after listing`,
+      timeline,
+    });
+  }
+
+  return { offMarket, onMarket };
+}
 
 function getStepColor(step, steps, currentStatus) {
   const currentIdx = steps.findIndex(s => s.key === currentStatus);
   const stepIdx = steps.findIndex(s => s.key === step.key);
-  if (stepIdx < currentIdx) return 'bg-emerald-500';
-  if (stepIdx === currentIdx) return 'bg-emerald-500';
+  if (stepIdx <= currentIdx) return 'bg-emerald-500';
   return 'bg-gray-200';
 }
 
@@ -441,92 +491,92 @@ function DemoStatusBadge({ status, steps }) {
   );
 }
 
-const SEARCH_MESSAGES = [
-  'Scanning listing databases...',
-  'Matching to your criteria...',
-  'Checking outreach pipeline...',
-  'Loading results...',
-];
-
 function DemoSection() {
   const [selectedListing, setSelectedListing] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
   const [industry, setIndustry] = useState('');
-  const [location, setLocation] = useState('');
-  const [phase, setPhase] = useState('filter'); // 'filter' | 'searching' | 'results'
-  const [searchMsgIdx, setSearchMsgIdx] = useState(0);
+  const [state, setState] = useState('');
+  const [phase, setPhase] = useState('filter');
+  const [searchProgress, setSearchProgress] = useState(0);
+  const [searchLabel, setSearchLabel] = useState('');
+  const [demoData, setDemoData] = useState(null);
 
   const handleSearch = (e) => {
     e.preventDefault();
     setPhase('searching');
-    setSearchMsgIdx(0);
-    let idx = 0;
+    setSearchProgress(0);
+    setSearchLabel('Connecting to listing databases...');
+    const labels = [
+      'Connecting to listing databases...',
+      `Scanning BizBuySell${industry ? ` for ${industry}` : ''}...`,
+      'Matching listings to your criteria...',
+      'Pulling off-market outreach results...',
+      'Checking pipeline status for active leads...',
+      'Compiling results...',
+    ];
+    let step = 0;
     const interval = setInterval(() => {
-      idx++;
-      if (idx >= SEARCH_MESSAGES.length) {
+      step++;
+      if (step >= labels.length) {
         clearInterval(interval);
-        setTimeout(() => setPhase('results'), 400);
+        setSearchProgress(100);
+        setSearchLabel('Done!');
+        setTimeout(() => {
+          setDemoData(generateDemoListings(industry, state));
+          setPhase('results');
+        }, 500);
       } else {
-        setSearchMsgIdx(idx);
+        setSearchProgress(Math.round((step / labels.length) * 100));
+        setSearchLabel(labels[step]);
       }
-    }, 700);
+    }, 600);
   };
 
   if (phase === 'filter') {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <form onSubmit={handleSearch} className="w-full max-w-md">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-            <div className="text-center mb-6">
-              <h2 className="text-xl font-bold text-gray-900">Search Criteria</h2>
-              <p className="text-sm text-gray-500 mt-1">See results from the past 2 weeks</p>
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <form onSubmit={handleSearch} className="w-full max-w-lg">
+          <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-emerald-600 to-emerald-700 px-8 py-10 text-center">
+              <img src="/logo.png" alt="Lended Search" className="h-10 mx-auto mb-4 brightness-0 invert" />
+              <h2 className="text-2xl font-bold text-white">See Your Deal Flow</h2>
+              <p className="text-emerald-100 text-sm mt-2">Preview results from the past 2 weeks</p>
             </div>
-            <div className="space-y-4">
+            <div className="px-8 py-8 space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Industry</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Target Industry</label>
                 <select
                   value={industry}
                   onChange={(e) => setIndustry(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all appearance-none"
                 >
                   <option value="">All Industries</option>
-                  <option value="Home Services">Home Services</option>
-                  <option value="HVAC">HVAC</option>
-                  <option value="Manufacturing">Manufacturing</option>
-                  <option value="Plumbing">Plumbing</option>
-                  <option value="Electrical Services">Electrical Services</option>
-                  <option value="Pest Control">Pest Control</option>
-                  <option value="Roofing">Roofing</option>
-                  <option value="Lawn Care">Lawn Care</option>
-                  <option value="Pool Services">Pool Services</option>
-                  <option value="Automotive Services">Automotive Services</option>
-                  <option value="Janitorial / Commercial Cleaning">Commercial Cleaning</option>
-                  <option value="Environmental Services">Environmental Services</option>
+                  {INDUSTRIES.map(ind => (
+                    <option key={ind} value={ind}>{ind}</option>
+                  ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Target State</label>
                 <select
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-sm bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all appearance-none"
                 >
-                  <option value="">All Locations</option>
-                  <option value="Northeast">Northeast</option>
-                  <option value="Southeast">Southeast</option>
-                  <option value="Midwest">Midwest</option>
-                  <option value="Southwest">Southwest</option>
-                  <option value="West">West</option>
-                  <option value="Northwest">Northwest</option>
+                  <option value="">All States</option>
+                  {US_STATES.map(s => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
                 </select>
               </div>
+              <button
+                type="submit"
+                className="w-full rounded-xl bg-emerald-600 py-4 text-sm font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all shadow-md shadow-emerald-200"
+              >
+                Search Listings
+              </button>
+              <p className="text-xs text-gray-400 text-center">Results are from the most recent 2-week window</p>
             </div>
-            <button
-              type="submit"
-              className="mt-6 w-full rounded-xl bg-emerald-600 py-3 text-sm font-semibold text-white hover:bg-emerald-700 transition-all"
-            >
-              Search Listings
-            </button>
           </div>
         </form>
       </div>
@@ -535,24 +585,35 @@ function DemoSection() {
 
   if (phase === 'searching') {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 mb-4">
-            <div className="w-10 h-10 border-3 border-emerald-200 border-t-emerald-600 rounded-full animate-spin" />
-          </div>
-          <p className="text-sm font-medium text-gray-700">{SEARCH_MESSAGES[searchMsgIdx]}</p>
-          <div className="flex justify-center gap-1.5 mt-4">
-            {SEARCH_MESSAGES.map((_, i) => (
+      <div className="flex items-center justify-center min-h-[70vh]">
+        <div className="w-full max-w-md text-center">
+          <div className="bg-white rounded-3xl shadow-lg border border-gray-100 p-10">
+            <div className="relative w-20 h-20 mx-auto mb-6">
+              <div className="absolute inset-0 rounded-full border-4 border-gray-100" />
+              <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-emerald-500 animate-spin" />
+              <div className="absolute inset-3 rounded-full border-4 border-transparent border-t-emerald-300 animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xs font-bold text-emerald-600">{searchProgress}%</span>
+              </div>
+            </div>
+            <p className="text-sm font-semibold text-gray-800 mb-2">{searchLabel}</p>
+            <div className="w-full bg-gray-100 rounded-full h-2 mt-4">
               <div
-                key={i}
-                className={`w-2 h-2 rounded-full transition-all ${i <= searchMsgIdx ? 'bg-emerald-500' : 'bg-gray-200'}`}
+                className="bg-emerald-500 h-2 rounded-full transition-all duration-500"
+                style={{ width: `${searchProgress}%` }}
               />
-            ))}
+            </div>
+            <div className="flex justify-between mt-2">
+              <span className="text-[10px] text-gray-400">Scanning databases</span>
+              <span className="text-[10px] text-gray-400">Compiling results</span>
+            </div>
           </div>
         </div>
       </div>
     );
   }
+
+  const { offMarket, onMarket } = demoData;
 
   return (
     <div className="space-y-8">
@@ -561,12 +622,12 @@ function DemoSection() {
         <div>
           <h2 className="text-lg font-bold text-gray-900">Results — Past 2 Weeks</h2>
           <p className="text-sm text-gray-500 mt-0.5">
-            {DEMO_OFF_MARKET.length} off-market &middot; {DEMO_ON_MARKET.length} on-market listings
-            {(industry || location) && <span> &middot; Filtered by {[industry, location].filter(Boolean).join(', ')}</span>}
+            {offMarket.length} off-market &middot; {onMarket.length} on-market
+            {(industry || state) && <span> &middot; {[industry, state].filter(Boolean).join(', ')}</span>}
           </p>
         </div>
         <button
-          onClick={() => setPhase('filter')}
+          onClick={() => { setPhase('filter'); setDemoData(null); }}
           className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
         >
           New Search
@@ -577,7 +638,7 @@ function DemoSection() {
       <div>
         <div className="flex items-center gap-3 mb-4">
           <h3 className="text-sm font-bold text-gray-900">Off Market</h3>
-          <span className="text-xs text-gray-400">{DEMO_OFF_MARKET.length} listings from direct outreach</span>
+          <span className="text-xs text-gray-400">{offMarket.length} listings from direct outreach</span>
         </div>
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
@@ -594,7 +655,7 @@ function DemoSection() {
                 </tr>
               </thead>
               <tbody>
-                {DEMO_OFF_MARKET.map((listing) => (
+                {offMarket.map((listing) => (
                   <tr
                     key={listing.id}
                     className="border-b border-gray-50 hover:bg-emerald-50 cursor-pointer transition-colors"
@@ -621,7 +682,7 @@ function DemoSection() {
       <div>
         <div className="flex items-center gap-3 mb-4">
           <h3 className="text-sm font-bold text-gray-900">On Market</h3>
-          <span className="text-xs text-gray-400">{DEMO_ON_MARKET.length} active listings our searchers are engaged with</span>
+          <span className="text-xs text-gray-400">{onMarket.length} active listings our searchers are engaged with</span>
         </div>
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
@@ -639,7 +700,7 @@ function DemoSection() {
                 </tr>
               </thead>
               <tbody>
-                {DEMO_ON_MARKET.map((listing) => (
+                {onMarket.map((listing) => (
                   <tr
                     key={listing.id}
                     className="border-b border-gray-50 hover:bg-emerald-50 cursor-pointer transition-colors"
