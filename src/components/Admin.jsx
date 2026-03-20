@@ -71,8 +71,9 @@ const ON_MARKET_STEPS = [
 const OFF_MARKET_STEPS = [
   { key: 'identified', label: 'Owner Identified' },
   { key: 'called', label: 'Call Made' },
-  { key: 'conversation_had', label: 'Conversation Had' },
   { key: 'meeting_booked', label: 'Meeting Booked' },
+  { key: 'conversation_had', label: 'Conversation Had' },
+  { key: 'files_received', label: 'Files Received' },
   { key: 'loi_submitted', label: 'LOI Submitted' },
 ];
 
@@ -253,7 +254,8 @@ function generateDemoListings(industry, state) {
   const hours = ['8:15 AM','8:45 AM','9:02 AM','9:30 AM','10:10 AM','10:22 AM','10:45 AM','11:08 AM','11:15 AM','11:30 AM','1:15 PM','2:05 PM','2:30 PM','3:15 PM','3:45 PM'];
 
   const offMarket = [];
-  const offStatuses = ['called','conversation_had','meeting_booked','loi_submitted','meeting_booked','conversation_had'];
+  // New order: identified → called → meeting_booked → conversation_had → files_received → loi_submitted
+  const offStatuses = ['called','meeting_booked','conversation_had','files_received','loi_submitted','meeting_booked'];
   const identifyMethods = [
     'Found via SOS database — owner registered over 25 years ago',
     'Email campaign — owner responded to direct mail piece',
@@ -272,20 +274,28 @@ function generateDemoListings(industry, state) {
     'Follow-up call, owner open to discussion',
     'Connected on second attempt, owner motivated to explore options',
   ];
-  const convNotes = [
-    'Owner interested in retiring within 12 months, no broker yet',
-    'Owner exploring options, wants to stay on 6 months post-close',
-    'Detailed financials shared, clean books, strong recurring revenue',
-    'Owner wants full exit, established customer contracts in place',
-    'Good conversation — owner has no succession plan, open to offers',
-    'Owner motivated, discussing timeline and transition expectations',
-  ];
   const meetNotes = [
     'In-person meeting set at facility',
     'Meeting scheduled with owner and his attorney',
     'Zoom meeting booked, financials to be shared ahead',
     'On-site tour and meeting with owner + bookkeeper',
     'Meeting booked — owner sending P&L and balance sheet',
+  ];
+  const convNotes = [
+    'Owner interested in retiring within 12 months, no broker yet',
+    'Owner exploring options, wants to stay on 6 months post-close',
+    'Detailed financials discussed, clean books, strong recurring revenue',
+    'Owner wants full exit, established customer contracts in place',
+    'Good conversation — owner has no succession plan, open to offers',
+    'Owner motivated, discussing timeline and transition expectations',
+  ];
+  const filesNotes = [
+    'P&L, balance sheet, and tax returns received — reviewing financials',
+    'CIM and 3 years of financials received from owner',
+    'Owner sent tax returns, AR/AP aging, and customer list',
+    'Financials package received — clean books, reviewing with advisor',
+    'Received P&L, equipment list, and lease agreements',
+    'Owner shared QuickBooks access and last 3 years of returns',
   ];
   const loiNotes = ['LOI submitted, 60-day diligence period','LOI submitted at asking price','LOI submitted, negotiating terms'];
 
@@ -295,14 +305,17 @@ function generateDemoListings(industry, state) {
     const status = offStatuses[i % offStatuses.length];
     const timeline = [{ step: 'identified', date: pickRandom(dates.slice(0, 5), rng), note: pickRandom(identifyMethods, rng) }];
     timeline.push({ step: 'called', date: pickRandom(dates.slice(2, 7), rng), note: pickRandom(callNotes, rng) });
-    if (['conversation_had','meeting_booked','loi_submitted'].includes(status)) {
-      timeline.push({ step: 'conversation_had', date: pickRandom(dates.slice(4, 9), rng), note: pickRandom(convNotes, rng) });
+    if (['meeting_booked','conversation_had','files_received','loi_submitted'].includes(status)) {
+      timeline.push({ step: 'meeting_booked', date: pickRandom(dates.slice(3, 8), rng), note: pickRandom(meetNotes, rng) });
     }
-    if (['meeting_booked','loi_submitted'].includes(status)) {
-      timeline.push({ step: 'meeting_booked', date: pickRandom(dates.slice(6, 12), rng), note: pickRandom(meetNotes, rng) });
+    if (['conversation_had','files_received','loi_submitted'].includes(status)) {
+      timeline.push({ step: 'conversation_had', date: pickRandom(dates.slice(5, 10), rng), note: pickRandom(convNotes, rng) });
+    }
+    if (['files_received','loi_submitted'].includes(status)) {
+      timeline.push({ step: 'files_received', date: pickRandom(dates.slice(7, 12), rng), note: pickRandom(filesNotes, rng) });
     }
     if (status === 'loi_submitted') {
-      timeline.push({ step: 'loi_submitted', date: pickRandom(dates.slice(8, 14), rng), note: pickRandom(loiNotes, rng) });
+      timeline.push({ step: 'loi_submitted', date: pickRandom(dates.slice(9, 14), rng), note: pickRandom(loiNotes, rng) });
     }
     offMarket.push({
       id: `off${i}`,
