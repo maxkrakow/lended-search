@@ -254,8 +254,8 @@ function generateDemoListings(industry, state) {
   const hours = ['8:15 AM','8:45 AM','9:02 AM','9:30 AM','10:10 AM','10:22 AM','10:45 AM','11:08 AM','11:15 AM','11:30 AM','1:15 PM','2:05 PM','2:30 PM','3:15 PM','3:45 PM'];
 
   const offMarket = [];
-  // New order: identified → called → meeting_booked → conversation_had → files_received → loi_submitted
-  const offStatuses = ['called','meeting_booked','conversation_had','files_received','loi_submitted','meeting_booked'];
+  // Off-market results should be at least meeting_booked (showing past client results)
+  const offStatuses = ['meeting_booked','conversation_had','files_received','loi_submitted','meeting_booked','files_received'];
   const identifyMethods = [
     'Found via SOS database — owner registered over 25 years ago',
     'Email campaign — owner responded to direct mail piece',
